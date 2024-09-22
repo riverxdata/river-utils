@@ -1,5 +1,10 @@
 #!/bin/bash
 RIVER_HOME="$HOME"
+if [-f "$RIVER_HOME/.river.sh"]; then
+    source "$RIVER_HOME/.river.sh"
+    echo "River utilities already installed."
+fi
+
 RIVER_HOME_TOOLS=${RIVER_HOME}/.river/tools
 # tools version
 openvscode_server_version="1.93.1"
