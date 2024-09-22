@@ -11,8 +11,7 @@ usage() {
 if [ "$#" -lt 1 ]; then
     usage
 fi
-# RIVER_HOME="$1"
-RIVER_HOME="/home/vagrant"
+RIVER_HOME="$1"
 RIVER_HOME_TOOLS=${RIVER_HOME}/.river/tools
 # tools version
 openvscode_server_version="1.93.1"
