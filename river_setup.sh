@@ -46,7 +46,3 @@ export SINGULARITY_CACHE_DIR=${RIVER_HOME}/.images/singularities
 export PATH=\$PATH:${RIVER_HOME_TOOLS}/utilities:${RIVER_HOME_TOOLS}
 export RIVER_HOME=${RIVER_HOME}
 EOF
-
-# add river to source .bashrc
-echo "Adding river to .bashrc"
-echo "source $RIVER_HOME/.river.sh" >> ~/.bashrc
