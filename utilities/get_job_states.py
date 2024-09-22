@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import subprocess
 import argparse
 from datetime import timedelta
@@ -38,31 +37,27 @@ class Job:
 
 
 def get_slurm_jobs(jobs: list):
+    river_home = os.getenv("RIVER_HOME")
+    if not river_home:
+        raise EnvironmentError("RIVER_HOME environment variable is not set")
+
     for job in jobs:
         if not job.slurm_job_id:
             try:
-                if os.path.exists(
-                    f"${{RIVER_HOME}}/.river/jobs/{job.uuid_job_id}/job.id"
-                ):
+                job_path = f"{river_home}/.river/jobs/{job.uuid_job_id}"
+                if os.path.exists(f"{job_path}/job.id"):
                     slurm_id = subprocess.check_output(
-                        f"cat ${{RIVER_HOME}}/.river/jobs/{job.uuid_job_id}/job.id",
-                        shell=True,
+                        f"cat {job_path}/job.id", shell=True
                     )
                     job.slurm_job_id = slurm_id.decode().strip()
-                if os.path.exists(
-                    f"${{RIVER_HOME}}/.river/jobs/{job.uuid_job_id}/job.host"
-                ):
+                if os.path.exists(f"{job_path}/job.host"):
                     slurm_host = subprocess.check_output(
-                        f"cat ${{RIVER_HOME}}/.river/jobs/{job.uuid_job_id}/job.host",
-                        shell=True,
+                        f"cat {job_path}/job.host", shell=True
                     )
                     job.host = slurm_host.decode().strip()
-                if os.path.exists(
-                    f"${{RIVER_HOME}}/.river/jobs/{job.uuid_job_id}/job.port"
-                ):
+                if os.path.exists(f"{job_path}/job.port"):
                     slurm_port = subprocess.check_output(
-                        f"cat ${{RIVER_HOME}}/.river/jobs/{job.uuid_job_id}/job.port",
-                        shell=True,
+                        f"cat {job_path}/job.port", shell=True
                     )
                     job.port = slurm_port.decode().strip()
             except subprocess.CalledProcessError:
