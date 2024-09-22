@@ -8,23 +8,23 @@ from pathlib import Path
 DEFAULT_HEADER = """#!/bin/bash
 #SBATCH --job-name=<<uuid_job_id>>
 #SBATCH --time=<<times>>
-#SBATCH --output=${RIVER_HOME}/.river/jobs/<<uuid_job_id>>/job.log
+#SBATCH --output=<<river_home>>/.river/jobs/<<uuid_job_id>>/job.log
 #SBATCH --mem=<<memory>>
 #SBATCH --cpus-per-task=<<cpus>>
 set -e
 """
 ACCESS_HEADER = """
 PORT=$(python3 -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()')
-echo $(hostname) > "${RIVER_HOME}/.river/jobs/<<uuid_job_id>>/job.host"
-echo $PORT > "${RIVER_HOME}/.river/jobs/<<uuid_job_id>>/job.port"
+echo $(hostname) > "<<river_home>>/.river/jobs/<<uuid_job_id>>/job.host"
+echo $PORT > "<<river_home>>/.river/jobs/<<uuid_job_id>>/job.port"
 PASSWORD=$(openssl rand -base64 20)
-echo $PASSWORD > "${RIVER_HOME}/.river/jobs/<<uuid_job_id>>/job.password"
+echo $PASSWORD > "<<river_home>>/.river/jobs/<<uuid_job_id>>/job.password"
 """
 MOUNT_S3_SCRIPT = """
-s3_cloud.sh <<project_name>> <<endpoint>> ${RIVER_HOME}/.river/jobs/<<uuid_job_id>>/workspace <<bucket_name>>
+s3_cloud.sh <<project_name>> <<endpoint>> <<river_home>>/.river/jobs/<<uuid_job_id>>/workspace <<bucket_name>>
 """
 UMOUNT_S3_SCRIPT = """
-s3_umount.sh ${RIVER_HOME}/.river/jobs/<<uuid_job_id>>/workspace
+s3_umount.sh <<river_home>>/.river/jobs/<<uuid_job_id>>/workspace
 """
 
 
@@ -93,7 +93,7 @@ def generate_script(
     )
     clone_or_update_repo(git, local_repo, version)
     config_data = load_json_file(config_file)
-
+    config_data["river_home"] = os.environ.get("RIVER_HOME", ".")
     # generate script
     header = replace_placeholders(DEFAULT_HEADER, config_data)
     access_header = replace_placeholders(ACCESS_HEADER, config_data)
