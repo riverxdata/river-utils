@@ -41,19 +41,28 @@ def get_slurm_jobs(jobs: list):
     for job in jobs:
         if not job.slurm_job_id:
             try:
-                if os.path.exists(f".jobs/{job.uuid_job_id}/job.id"):
+                if os.path.exists(
+                    f"${{RIVER_HOME}}/.river/jobs/{job.uuid_job_id}/job.id"
+                ):
                     slurm_id = subprocess.check_output(
-                        f"cat .jobs/{job.uuid_job_id}/job.id", shell=True
+                        f"cat ${{RIVER_HOME}}/.river/jobs/{job.uuid_job_id}/job.id",
+                        shell=True,
                     )
                     job.slurm_job_id = slurm_id.decode().strip()
-                if os.path.exists(f".jobs/{job.uuid_job_id}/job.host"):
+                if os.path.exists(
+                    f"${{RIVER_HOME}}/.river/jobs/{job.uuid_job_id}/job.host"
+                ):
                     slurm_host = subprocess.check_output(
-                        f"cat .jobs/{job.uuid_job_id}/job.host", shell=True
+                        f"cat ${{RIVER_HOME}}/.river/jobs/{job.uuid_job_id}/job.host",
+                        shell=True,
                     )
                     job.host = slurm_host.decode().strip()
-                if os.path.exists(f".jobs/{job.uuid_job_id}/job.port"):
+                if os.path.exists(
+                    f"${{RIVER_HOME}}/.river/jobs/{job.uuid_job_id}/job.port"
+                ):
                     slurm_port = subprocess.check_output(
-                        f"cat .jobs/{job.uuid_job_id}/job.port", shell=True
+                        f"cat ${{RIVER_HOME}}/.river/jobs/{job.uuid_job_id}/job.port",
+                        shell=True,
                     )
                     job.port = slurm_port.decode().strip()
             except subprocess.CalledProcessError:
