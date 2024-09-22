@@ -1,24 +1,5 @@
 #!/bin/bash
-
-# Function to display help message
-usage() {
-    echo "Usage: $0 <RIVER_HOME> "
-    echo "  <RIVER_HOME>  Directory where the river server tools will be installed."
-    exit 1
-}
-
-# Check for the correct number of arguments
-if [ "$#" -lt 1 ]; then
-    RIVER_HOME="$HOME"
-else
-    RIVER_HOME="$1"
-fi
-
-if [ ! -d "$RIVER_HOME/.river.sh" ]; then
-    echo "Already setup, ignore"
-    exit 0
-fi
-RIVER_HOME="$1"
+RIVER_HOME="$HOME"
 RIVER_HOME_TOOLS=${RIVER_HOME}/.river/tools
 # tools version
 openvscode_server_version="1.93.1"
