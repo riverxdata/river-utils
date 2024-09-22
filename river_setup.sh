@@ -8,7 +8,7 @@ usage() {
 }
 
 # Check for the correct number of arguments
-if [ "$#" -lt 4 ]; then
+if [ "$#" -lt 1 ]; then
     usage
 fi
 # RIVER_HOME="$1"
