@@ -1,6 +1,6 @@
 #!/bin/bash
 RIVER_HOME="$HOME"
-if [-f "$RIVER_HOME/.river.sh"]; then
+if [ -f "$RIVER_HOME/.river.sh" ]; then
     source "$RIVER_HOME/.river.sh"
     echo "River utilities already installed."
 fi
