@@ -21,7 +21,6 @@ PROFILE="$1"
 ENDPOINT="$2"
 MOUNT_POINT="$3"
 BUCKET="$4"
-GOOFYS_PATH="$RIVER_HOME/.tools/goofys"
 
 # Ensure the mount point directory exists
 if [ ! -d "$MOUNT_POINT" ]; then
@@ -30,10 +29,10 @@ if [ ! -d "$MOUNT_POINT" ]; then
 fi
 
 # Check if goofys is installed
-if [ -f "$GOOFYS_PATH" ]; then
-    echo "goofys is already installed at $GOOFYS_PATH"
+if command -v goofys >/dev/null 2>&1; then
+    echo "goofys is already installed."
 else
-    echo "ERROR: goofys is not installed at $GOOFYS_PATH"
+    echo "ERROR: goofys is not installed. Please install goofys before running this script."
     exit 1
 fi
 
