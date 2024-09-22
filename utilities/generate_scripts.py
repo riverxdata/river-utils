@@ -110,9 +110,9 @@ def generate_script(
         if allow_access:
             file.write("\n" + access_header)
         # write before script to mount s3 for all jobs
-        file.write("\n" + mount_s3)
+        # file.write("\n" + mount_s3)
         file.write("\n" + main_script)
-        file.write("\n" + umount_s3)
+        # file.write("\n" + umount_s3)
 
     os.chmod(output_file, 0o700)
     print(f"Generated script with parameters has been saved to {output_file}")
