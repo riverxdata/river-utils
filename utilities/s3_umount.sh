@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Function to display help message
+#
 usage() {
     echo "Usage: $0 <mount_point>"
     echo
