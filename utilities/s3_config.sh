@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Function to display help message
+#
 usage() {
     echo "Usage: $0 <profile_name> <region> <aws_access_key_id> <aws_secret_access_key>"
     echo
