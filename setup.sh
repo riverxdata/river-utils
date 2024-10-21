@@ -14,11 +14,11 @@ mkdir -p ${RIVER_HOME_TOOLS}
 wget https://github.com/gitpod-io/openvscode-server/releases/download/openvscode-server-v${openvscode_server_version}/openvscode-server-v${openvscode_server_version}-linux-x64.tar.gz \
     -O ${RIVER_HOME_TOOLS}/openvscode-server-v${openvscode_server_version}-linux-x64.tar.gz
 
-tar -xzf ${RIVER_HOME_TOOLS}/openvscode-server-v${openvscode_server_version}-linux-x64.tar.gz -C ${RIVER_HOME}
+tar -xzf ${RIVER_HOME_TOOLS}/openvscode-server-v${openvscode_server_version}-linux-x64.tar.gz -C ${RIVER_HOME_TOOLS}
 rm ${RIVER_HOME_TOOLS}/openvscode-server-v${openvscode_server_version}-linux-x64.tar.gz
 
 # install goofys
-wget https://github.com/kahing/goofys/releases/download/v${goofys_version}/goofys -O ${RIVER_HOME_TOOLS}/goofys
+wget https://github.com/kahing/goofys/releases/download/v${goofys_version}/goofys -O ${RIVER_HOME_TOOLS}/utilities/goofys
 chmod +x ${RIVER_HOME_TOOLS}/goofys
 
 # install river utilities
@@ -29,6 +29,6 @@ chmod 700 ${RIVER_HOME_TOOLS}/utilities/*
 echo "Create .river.sh for river utilities export"
 cat <<EOF >> "$RIVER_HOME/.river.sh"
 export SINGULARITY_CACHE_DIR=${RIVER_HOME}/.images/singularities
-export PATH=\$PATH:${RIVER_HOME_TOOLS}/utilities:${RIVER_HOME_TOOLS}
+export PATH=\$PATH:${RIVER_HOME_TOOLS}/utilities:${RIVER_HOME_TOOLS}:${RIVER_HOME_TOOLS}/openvscode-server-v${openvscode_server_version}-linux-x64/bin
 export RIVER_HOME=${RIVER_HOME}
 EOF
