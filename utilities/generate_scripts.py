@@ -18,7 +18,7 @@ ACCESS_HEADER = """
 PORT=$(python3 -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()')
 echo $(hostname) > "<<river_home>>/.river/jobs/<<uuid_job_id>>/job.host"
 echo $PORT > "<<river_home>>/.river/jobs/<<uuid_job_id>>/job.port"
-PASSWORD=$(openssl rand -base64 20)
+PASSWORD=$(openssl rand -hex 20)
 echo $PASSWORD > "<<river_home>>/.river/jobs/<<uuid_job_id>>/job.password"
 """
 MOUNT_S3_SCRIPT = """
