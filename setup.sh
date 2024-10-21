@@ -18,8 +18,7 @@ tar -xzf ${RIVER_HOME_TOOLS}/openvscode-server-v${openvscode_server_version}-lin
 rm ${RIVER_HOME_TOOLS}/openvscode-server-v${openvscode_server_version}-linux-x64.tar.gz
 
 # install goofys
-wget https://github.com/kahing/goofys/releases/download/v${goofys_version}/goofys -O ${RIVER_HOME_TOOLS}/utilities/goofys
-chmod +x ${RIVER_HOME_TOOLS}/goofys
+wget https://github.com/kahing/goofys/releases/download/v${goofys_version}/goofys -O ./utilities/goofys
 
 # install river utilities
 cp -r ./utilities ${RIVER_HOME_TOOLS}/utilities
