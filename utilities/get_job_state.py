@@ -127,9 +127,8 @@ def main():
     job_uuids = args.job_uuids.split(",")
     jobs = [Job(uuid) for uuid in job_uuids]
     get_jobs_info(jobs)
-
     jobs_info = [job.to_dict() for job in jobs]
-    print(json.dumps(jobs_info, indent=6))
+    print(json.dumps(jobs_info[0], indent=6))
 
 
 if __name__ == "__main__":
