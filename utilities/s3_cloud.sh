@@ -42,5 +42,5 @@ if mountpoint -q "$MOUNT_POINT"; then
     echo "$MOUNT_POINT is already mounted."
 else
     echo "$MOUNT_POINT is not mounted. Mounting with goofys..."
-    goofys -f --profile "$PROFILE" --file-mode=0700 --dir-mode=0700 --endpoint="$ENDPOINT" "$BUCKET" "$MOUNT_POINT"   
+    goofys --profile "$PROFILE" --file-mode=0700 --dir-mode=0700 --endpoint="$ENDPOINT" "$BUCKET" "$MOUNT_POINT"   
 fi
