@@ -11,7 +11,6 @@ DEFAULT_HEADER = """#!/bin/bash
 #SBATCH --output=<<river_home>>/.river/jobs/<<uuid_job_id>>/job.log
 #SBATCH --mem=<<memory>>
 #SBATCH --cpus-per-task=<<cpus>>
-set -e
 source ~/.river.sh
 """
 ACCESS_HEADER = """
@@ -20,12 +19,15 @@ echo $(hostname) > "<<river_home>>/.river/jobs/<<uuid_job_id>>/job.host"
 echo $PORT > "<<river_home>>/.river/jobs/<<uuid_job_id>>/job.port"
 PASSWORD=$(openssl rand -hex 20)
 echo $PASSWORD > "<<river_home>>/.river/jobs/<<uuid_job_id>>/job.password"
+# Symlink analysis
+ls -sf <<river_home>>/.river/tools/<<analysis>> <<river_home>>/.river/jobs/<<uuid_job_id>>/<<analysis>>
 """
-MOUNT_S3_SCRIPT = """
+S3_SCRIPT = """
+cleanup(){
+    s3_umount.sh <<river_home>>/.river/jobs/<<uuid_job_id>>/workspace
+}
+trap cleanup EXIT SIGINT SIGTERM
 s3_cloud.sh <<project_name>> <<endpoint>> <<river_home>>/.river/jobs/<<uuid_job_id>>/workspace <<bucket_name>>
-"""
-UMOUNT_S3_SCRIPT = """
-s3_umount.sh <<river_home>>/.river/jobs/<<uuid_job_id>>/workspace
 """
 
 
@@ -95,14 +97,14 @@ def generate_script(
     clone_or_update_repo(git, local_repo, version)
     config_data = load_json_file(config_file)
     config_data["river_home"] = os.environ.get("RIVER_HOME", ".")
+    config_data["analysis"] = tool_name
     # generate script
     header = replace_placeholders(DEFAULT_HEADER, config_data)
     access_header = replace_placeholders(ACCESS_HEADER, config_data)
-    mount_s3 = replace_placeholders(MOUNT_S3_SCRIPT, config_data)
+    mount_s3 = replace_placeholders(S3_SCRIPT, config_data)
     with open(os.path.expanduser(job_script_path), "r") as file:
         main_script = file.read()
         main_script = replace_placeholders(main_script, config_data)
-    umount_s3 = replace_placeholders(UMOUNT_S3_SCRIPT, config_data)
 
     # write script
     with open(os.path.expanduser(output_file), "w") as file:
@@ -113,7 +115,6 @@ def generate_script(
         # write before script to mount s3 for all jobs
         file.write("\n" + mount_s3)
         file.write("\n" + main_script)
-        file.write("\n" + umount_s3)
 
     os.chmod(output_file, 0o700)
     print(f"Generated script with parameters has been saved to {output_file}")
