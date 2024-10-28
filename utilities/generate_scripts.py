@@ -20,14 +20,16 @@ echo $PORT > "<<river_home>>/.river/jobs/<<uuid_job_id>>/job.port"
 PASSWORD=$(openssl rand -hex 20)
 echo $PASSWORD > "<<river_home>>/.river/jobs/<<uuid_job_id>>/job.password"
 # Symlink analysis
-ls -sf <<river_home>>/.river/tools/<<analysis>> <<river_home>>/.river/jobs/<<uuid_job_id>>/<<analysis>>
+ln -sf <<river_home>>/.river/tools/<<analysis>> <<river_home>>/.river/jobs/<<uuid_job_id>>/<<analysis>>
 """
 S3_SCRIPT = """
 cleanup(){
     s3_umount.sh <<river_home>>/.river/jobs/<<uuid_job_id>>/workspace
 }
-trap cleanup EXIT SIGINT SIGTERM
+exit_code=0
+trap 'exit_code=$?; cleanup; exit $exit_code' EXIT INT TERM
 s3_cloud.sh <<project_name>> <<endpoint>> <<river_home>>/.river/jobs/<<uuid_job_id>>/workspace <<bucket_name>>
+set -e
 """
 
 
@@ -115,6 +117,7 @@ def generate_script(
         # write before script to mount s3 for all jobs
         file.write("\n" + mount_s3)
         file.write("\n" + main_script)
+        file.write("\nexit 0\n")
 
     os.chmod(output_file, 0o700)
     print(f"Generated script with parameters has been saved to {output_file}")
