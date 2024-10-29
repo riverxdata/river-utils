@@ -12,24 +12,31 @@ DEFAULT_HEADER = """#!/bin/bash
 #SBATCH --mem=<<memory>>
 #SBATCH --cpus-per-task=<<cpus>>
 source ~/.river.sh
+# symlink analysis
+ln -sf <<river_home>>/.river/tools/<<analysis>> <<river_home>>/.river/jobs/<<uuid_job_id>>/<<analysis>>
 """
 ACCESS_HEADER = """
+# Access job
 PORT=$(python3 -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()')
 echo $(hostname) > "<<river_home>>/.river/jobs/<<uuid_job_id>>/job.host"
 echo $PORT > "<<river_home>>/.river/jobs/<<uuid_job_id>>/job.port"
 PASSWORD=$(openssl rand -hex 20)
 echo $PASSWORD > "<<river_home>>/.river/jobs/<<uuid_job_id>>/job.password"
-# Symlink analysis
-ln -sf <<river_home>>/.river/tools/<<analysis>> <<river_home>>/.river/jobs/<<uuid_job_id>>/<<analysis>>
 """
 S3_SCRIPT = """
+# Cloud storage
 cleanup(){
     s3_umount.sh <<river_home>>/.river/jobs/<<uuid_job_id>>/workspace
 }
-exit_code=0
-trap 'exit_code=$?; cleanup; exit $exit_code' EXIT INT TERM
+error_handler() {
+    local exit_code=$?
+    cleanup
+    exit $exit_code
+}
+
+trap 'error_handler' EXIT
+set -euo pipefail
 s3_cloud.sh <<project_name>> <<endpoint>> <<river_home>>/.river/jobs/<<uuid_job_id>>/workspace <<bucket_name>>
-set -e
 """
 
 
@@ -117,7 +124,6 @@ def generate_script(
         # write before script to mount s3 for all jobs
         file.write("\n" + mount_s3)
         file.write("\n" + main_script)
-        file.write("\nexit 0\n")
 
     os.chmod(output_file, 0o700)
     print(f"Generated script with parameters has been saved to {output_file}")
