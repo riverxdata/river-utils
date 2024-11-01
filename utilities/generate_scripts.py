@@ -36,7 +36,7 @@ error_handler() {
 
 trap 'error_handler' EXIT
 set -euo pipefail
-s3_cloud.sh <<project_name>> <<endpoint>> <<river_home>>/.river/jobs/<<uuid_job_id>>/workspace <<bucket_name>>
+s3_cloud.sh <<bucket_name>> <<endpoint>> <<river_home>>/.river/jobs/<<uuid_job_id>>/workspace <<bucket_name>>
 """
 
 
