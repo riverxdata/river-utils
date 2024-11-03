@@ -20,6 +20,13 @@ rm ${RIVER_HOME_TOOLS}/openvscode-server-v${openvscode_server_version}-linux-x64
 # install goofys
 wget https://github.com/kahing/goofys/releases/download/v${goofys_version}/goofys -O ./utilities/goofys
 
+# install micromamba
+
+curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj $RIVER_HOME_TOOLS/micromamba/micromamba
+
+# install singularity by micromamba
+$RIVER_HOME_TOOLS/micromamba/create -p ${RIVER_HOME}/images/micromamba/river conda-forge::singularity
+
 # install river utilities
 cp -r ./utilities ${RIVER_HOME_TOOLS}/utilities
 chmod 700 ${RIVER_HOME_TOOLS}/utilities/*
@@ -27,7 +34,9 @@ chmod 700 ${RIVER_HOME_TOOLS}/utilities/*
 # add tools to PATH
 echo "Create .river.sh for river utilities export"
 cat <<EOF >> "$RIVER_HOME/.river.sh"
-export SINGULARITY_CACHE_DIR=${RIVER_HOME}/.images/singularities
-export PATH=\$PATH:${RIVER_HOME_TOOLS}/utilities:${RIVER_HOME_TOOLS}:${RIVER_HOME_TOOLS}/openvscode-server-v${openvscode_server_version}-linux-x64/bin
 export RIVER_HOME=${RIVER_HOME}
-EOF
+export RIVER_HOME_TOOLS=\${RIVER_HOME}/.river/tools
+export MAMBA_ROOT_PREFIX=\${RIVER_HOME}/.images/micromamba
+export SINGULARITY_CACHE_DIR=\${RIVER_HOME}/.images/singularities
+export PATH=\${RIVER_HOME_TOOLS}/utilities:\${RIVER_HOME_TOOLS}:\${RIVER_HOME_TOOLS}/openvscode-server-v${openvscode_server_version}-linux-x64/bin:\${RIVER_HOME_TOOLS}/micromamba:\$PATH
+EOFs
