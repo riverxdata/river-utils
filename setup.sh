@@ -21,8 +21,8 @@ rm ${RIVER_HOME_TOOLS}/openvscode-server-v${openvscode_server_version}-linux-x64
 wget https://github.com/kahing/goofys/releases/download/v${goofys_version}/goofys -O ./utilities/goofys
 
 # install micromamba
-
-curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj $RIVER_HOME_TOOLS/micromamba/micromamba
+curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj -C $RIVER_HOME_TOOLS bin/micromamba
+mv $RIVER_HOME_TOOLS/bin $RIVER_HOME_TOOLS/micromamba
 
 # install singularity by micromamba
 $RIVER_HOME_TOOLS/micromamba/create -p ${RIVER_HOME}/images/micromamba/river conda-forge::singularity
