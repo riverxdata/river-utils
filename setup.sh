@@ -25,7 +25,7 @@ curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj -C $RI
 mv $RIVER_HOME_TOOLS/bin $RIVER_HOME_TOOLS/micromamba
 
 # install singularity by micromamba
-$RIVER_HOME_TOOLS/micromamba/create -p ${RIVER_HOME}/images/micromamba/river conda-forge::singularity
+$RIVER_HOME_TOOLS/micromamba/micromamba create -p ${RIVER_HOME}/images/micromamba/river conda-forge::singularity -y
 
 # install river utilities
 cp -r ./utilities ${RIVER_HOME_TOOLS}/utilities
@@ -39,5 +39,6 @@ export RIVER_HOME_TOOLS=\${RIVER_HOME}/.river/tools
 export MAMBA_ROOT_PREFIX=\${RIVER_HOME}/.images/micromamba
 export SINGULARITY_CACHE_DIR=\${RIVER_HOME}/.images/singularities
 export PATH=\${RIVER_HOME_TOOLS}/utilities:\${RIVER_HOME_TOOLS}:\${RIVER_HOME_TOOLS}/openvscode-server-v${openvscode_server_version}-linux-x64/bin:\${RIVER_HOME_TOOLS}/micromamba:\$PATH
+eval "$(micromamba shell hook -s posix)"
 micromamba activate -p ${RIVER_HOME}/images/micromamba/river
-EOFs
+EOF
