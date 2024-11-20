@@ -24,8 +24,8 @@ wget https://github.com/kahing/goofys/releases/download/v${goofys_version}/goofy
 curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj -C $RIVER_HOME_TOOLS bin/micromamba
 mv $RIVER_HOME_TOOLS/bin $RIVER_HOME_TOOLS/micromamba
 
-# install singularity by micromamba
-$RIVER_HOME_TOOLS/micromamba/micromamba create -p ${RIVER_HOME}/images/micromamba/river conda-forge::singularity -y
+# install singularity by micromamba and nextflow
+$RIVER_HOME_TOOLS/micromamba/micromamba create -p ${RIVER_HOME}/images/micromamba/river conda-forge::singularity bioconda::nextflow -y
 
 # install river utilities
 cp -r ./utilities ${RIVER_HOME_TOOLS}/utilities
