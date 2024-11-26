@@ -12,27 +12,24 @@ class Job:
         uuid_job_id,
         slurm_job_id=None,
         status=None,
-        port=None,
-        host=None,
+        url=None,
         running_time=timedelta(seconds=0),
     ):
         self.uuid_job_id = uuid_job_id
         self.slurm_job_id = slurm_job_id
         self.status = status
-        self.port = port
-        self.host = host
+        self.url = url
         self.running_time = running_time
 
     def __repr__(self):
-        return f"Job(uuid={self.uuid_job_id}, slurm_id={self.slurm_job_id}, status={self.status}, running_time={self.running_time}, port={self.port}, host={self.host})"  # noqa
+        return f"Job(uuid={self.uuid_job_id}, slurm_id={self.slurm_job_id}, status={self.status}, running_time={self.running_time}, url={self.url})"  # noqa
 
     def to_dict(self):
         return {
             "uuid_job_id": self.uuid_job_id,
             "slurm_job_id": self.slurm_job_id,
             "status": self.status,
-            "port": self.port,
-            "host": self.host,
+            "url": self.url,
             "running_time": str(self.running_time),
         }
 
@@ -51,16 +48,11 @@ def get_slurm_jobs(jobs: list):
                         f"cat {job_path}/job.id", shell=True
                     )
                     job.slurm_job_id = slurm_id.decode().strip()
-                if os.path.exists(f"{job_path}/job.host"):
-                    slurm_host = subprocess.check_output(
-                        f"cat {job_path}/job.host", shell=True
+                if os.path.exists(f"{job_path}/job.url"):
+                    slurm_url = subprocess.check_output(
+                        f"cat {job_path}/job.url", shell=True
                     )
-                    job.host = slurm_host.decode().strip()
-                if os.path.exists(f"{job_path}/job.port"):
-                    slurm_port = subprocess.check_output(
-                        f"cat {job_path}/job.port", shell=True
-                    )
-                    job.port = slurm_port.decode().strip()
+                    job.url = slurm_url.decode().strip()
             except subprocess.CalledProcessError:
                 pass
 
