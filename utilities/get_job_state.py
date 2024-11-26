@@ -22,6 +22,7 @@ class Job:
         self.status = status
         self.url = url
         self.port = port
+        self.host = host
         self.running_time = running_time
 
     def __repr__(self):
