@@ -19,7 +19,8 @@ ACCESS_HEADER = """
 # Access job
 PORT=$(python3 -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()')
 echo $PORT > "<<river_home>>/.river/jobs/<<uuid_job_id>>/job.port"
-echo $(hostname):$PORT > "<<river_home>>/.river/jobs/<<uuid_job_id>>/job.url"
+echo $(hostname) > "<<river_home>>/.river/jobs/<<uuid_job_id>>/job.host"
+echo <<uuid_job_id>> > /.river/jobs/<<uuid_job_id>>/job.url"
 """
 S3_SCRIPT = """
 # Cloud storage

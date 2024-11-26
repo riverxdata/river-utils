@@ -14,6 +14,7 @@ class Job:
         status=None,
         url=None,
         port=None,
+        host=None,
         running_time=timedelta(seconds=0),
     ):
         self.uuid_job_id = uuid_job_id
@@ -24,7 +25,7 @@ class Job:
         self.running_time = running_time
 
     def __repr__(self):
-        return f"Job(uuid={self.uuid_job_id}, slurm_id={self.slurm_job_id}, status={self.status}, running_time={self.running_time}, url={self.url})"  # noqa
+        return f"Job(uuid={self.uuid_job_id}, slurm_id={self.slurm_job_id}, status={self.status}, running_time={self.running_time}, url={self.url}, host={self.host}, port={self.port})"  # noqa
 
     def to_dict(self):
         return {
@@ -33,6 +34,7 @@ class Job:
             "status": self.status,
             "url": self.url,
             "port": self.port,
+            "host": self.host,
             "running_time": str(self.running_time),
         }
 
@@ -61,6 +63,11 @@ def get_slurm_jobs(jobs: list):
                         f"cat {job_path}/job.port", shell=True
                     )
                     job.port = slurm_port.decode().strip()
+                if os.path.exists(f"{job_path}/job.host"):
+                    slurm_host = subprocess.check_output(
+                        f"cat {job_path}/job.host", shell=True
+                    )
+                    job.host = slurm_host.decode().strip()
             except subprocess.CalledProcessError:
                 pass
 
