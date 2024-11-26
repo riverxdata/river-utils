@@ -13,12 +13,14 @@ class Job:
         slurm_job_id=None,
         status=None,
         url=None,
+        port=None,
         running_time=timedelta(seconds=0),
     ):
         self.uuid_job_id = uuid_job_id
         self.slurm_job_id = slurm_job_id
         self.status = status
         self.url = url
+        self.port = port
         self.running_time = running_time
 
     def __repr__(self):
@@ -30,6 +32,7 @@ class Job:
             "slurm_job_id": self.slurm_job_id,
             "status": self.status,
             "url": self.url,
+            "port": self.port,
             "running_time": str(self.running_time),
         }
 
@@ -53,6 +56,11 @@ def get_slurm_jobs(jobs: list):
                         f"cat {job_path}/job.url", shell=True
                     )
                     job.url = slurm_url.decode().strip()
+                if os.path.exists(f"{job_path}/job.port"):
+                    slurm_port = subprocess.check_output(
+                        f"cat {job_path}/job.port", shell=True
+                    )
+                    job.port = slurm_port.decode().strip()
             except subprocess.CalledProcessError:
                 pass
 
