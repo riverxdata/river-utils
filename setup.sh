@@ -25,6 +25,7 @@ curl -Ls https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xvj -C $RI
 mv $RIVER_HOME_TOOLS/bin $RIVER_HOME_TOOLS/micromamba
 
 # install singularity by micromamba and nextflow
+export MAMBA_ROOT_PREFIX=\${RIVER_HOME}/.images/micromamba
 $RIVER_HOME_TOOLS/micromamba/micromamba create -n river conda-forge::singularity bioconda::nextflow -y
 
 # install river utilities
