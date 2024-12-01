@@ -41,5 +41,5 @@ export SINGULARITY_CACHE_DIR=\${RIVER_HOME}/.images/singularities
 export NXF_SINGULARITY_CACHEDIR=\$SINGULARITY_CACHE_DIR
 export PATH=\${RIVER_HOME_TOOLS}/utilities:\${RIVER_HOME_TOOLS}:\${RIVER_HOME_TOOLS}/openvscode-server-v${openvscode_server_version}-linux-x64/bin:\${RIVER_HOME_TOOLS}/micromamba:\$PATH
 eval "\$(micromamba shell hook -s posix)"
-micromamba activate -p ${RIVER_HOME}/images/micromamba/river
+micromamba activate -n river
 EOF
