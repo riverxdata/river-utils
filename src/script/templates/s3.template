@@ -1,0 +1,13 @@
+# Cloud storage
+cleanup() {
+    s3_umount.sh <<river_home>>/.river/jobs/<<uuid_job_id>>/workspace
+}
+error_handler() {
+    local exit_code=$?
+    cleanup
+    exit $exit_code
+}
+
+trap 'error_handler' EXIT
+set -euo pipefail
+s3_cloud.sh <<bucket_name>> <<endpoint>> <<river_home>>/.river/jobs/<<uuid_job_id>>/workspace <<bucket_name>>

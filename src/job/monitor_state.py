@@ -1,9 +1,10 @@
-#!/usr/bin/env python3
 import subprocess
-import argparse
-from datetime import timedelta
-import json
 import os
+from datetime import timedelta
+from typing import List
+import typer
+
+app = typer.Typer()
 
 
 class Job:
@@ -26,7 +27,7 @@ class Job:
         self.running_time = running_time
 
     def __repr__(self):
-        return f"Job(uuid={self.uuid_job_id}, slurm_id={self.slurm_job_id}, status={self.status}, running_time={self.running_time}, url={self.url}, host={self.host}, port={self.port})"  # noqa
+        return f"Job(uuid={self.uuid_job_id}, slurm_id={self.slurm_job_id}, status={self.status}, running_time={self.running_time}, url={self.url}, host={self.host}, port={self.port})"
 
     def to_dict(self):
         return {
@@ -40,7 +41,7 @@ class Job:
         }
 
 
-def get_slurm_jobs(jobs: list):
+def get_slurm_jobs(jobs: List[Job]):
     river_home = os.getenv("RIVER_HOME")
     if not river_home:
         raise EnvironmentError("RIVER_HOME environment variable is not set")
@@ -96,7 +97,7 @@ def parse_duration(duration_str):
     return timedelta(seconds=total_seconds)
 
 
-def parsing_squeue_status(jobs: list, states: str, command="squeue"):
+def parsing_squeue_status(jobs: List[Job], states: str, command="squeue"):
     if states:
         lines = states.split("\n")[1:-1]
         for line in lines:
@@ -107,7 +108,7 @@ def parsing_squeue_status(jobs: list, states: str, command="squeue"):
                     job.status = state
 
 
-def get_jobs_info(jobs: list):
+def get_jobs_info(jobs: List[Job]):
     get_slurm_jobs(jobs)
     job_ids = [job.slurm_job_id for job in jobs if job.slurm_job_id]
     if len(job_ids) == 0:
@@ -127,17 +128,14 @@ def get_jobs_info(jobs: list):
     parsing_squeue_status(jobs, squeue_status)
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Get information about SLURM jobs.")
-    parser.add_argument("job_uuids", help="Comma-separated list of job UUIDs")
-    args = parser.parse_args()
-
-    job_uuids = args.job_uuids.split(",")
-    jobs = [Job(uuid) for uuid in job_uuids]
+@app.command()
+def info(uuid_job_ids: List[str]):
+    """Fetch and display information about jobs."""
+    jobs = [Job(uuid_job_id=uuid) for uuid in uuid_job_ids]
     get_jobs_info(jobs)
-    jobs_info = [job.to_dict() for job in jobs]
-    print(json.dumps(jobs_info[0], indent=6))
+    for job in jobs:
+        typer.echo(job.to_dict())
 
 
 if __name__ == "__main__":
-    main()
+    app()
