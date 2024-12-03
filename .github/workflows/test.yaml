@@ -1,13 +1,10 @@
 name: Run Tests with Coverage on Multiple Python Versions
-
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
-      - main
-
+      - dev
+      - features/**
+      - hotfix/**
 jobs:
   run-tests:
     runs-on: ubuntu-latest
