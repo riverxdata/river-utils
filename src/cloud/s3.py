@@ -8,7 +8,17 @@ app = typer.Typer()
 # S3 Config Command
 @app.command()
 def s3_config(profile: str, endpoint: str, mount_point: str, bucket: str):
-    """Configure AWS S3 profile."""
+    """
+    Generate s3 profile in ~/.aws/config
+    Args:
+        profile (str): The profile name
+        endpoint (str): The endpoint url
+        mount_point (str): The mount point
+        bucket (str): _description_
+
+    Raises:
+        typer.Exit: _description_
+    """
 
     # Ensure the mount point directory exists
     if not os.path.isdir(mount_point):

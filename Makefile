@@ -19,3 +19,6 @@ clean:
 # Install the package locally
 install:
 	pip install --upgrade --force-reinstall $(BUILD_DIR)/*.whl
+
+docs:
+	typer src/cloud/s3.py utils docs > 
