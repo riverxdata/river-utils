@@ -1,7 +1,7 @@
 import typer
 
 
-# from .setup.setup import app as setup_app
+from .setup.main import setup_app
 from .cloud.main import cloud_app
 from .job.main import job_app
 
@@ -18,11 +18,11 @@ app.add_typer(
     name="job",
     help="Job utilities for HPC management and river web server",
 )
-# app.add_typer(
-#     setup_app,
-#     name="setup",
-#     help="Set up the standard tools for bioinformatics analysis",
-# )
+app.add_typer(
+    setup_app,
+    name="setup",
+    help="Set up the standard tools for bioinformatics analysis",
+)
 
 
 def main():

@@ -4,7 +4,7 @@ import typer
 import shutil
 
 
-app = typer.Typer()
+setup_app = typer.Typer()
 
 # Default versions for tools
 openvscode_server_version = "1.93.1"
@@ -19,7 +19,7 @@ def run_command(command: str):
         raise Exception(f"Command failed: {command}")
 
 
-@app.command()
+@setup_app.command()
 def install(
     river_home: str = typer.Option(
         os.getenv("RIVER_HOME", os.path.expanduser("~")),
@@ -105,7 +105,7 @@ micromamba activate -n river
     print("Setup complete!")
 
 
-@app.command()
+@setup_app.command()
 def clean(
     river_home: str = typer.Option(
         os.getenv("RIVER_HOME", os.path.expanduser("~")),
@@ -130,4 +130,4 @@ def clean(
 
 
 if __name__ == "__main__":
-    app()
+    setup_app()
