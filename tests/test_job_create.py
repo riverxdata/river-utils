@@ -31,12 +31,13 @@ import pytest
         ),
     ],
     ids=[
-        "overwrite url access job",
-        "access job",
-        "non-ui job",
+        "overwrite_url_access_job",
+        "access_job",
+        "non_ui_job",
     ],
 )
-def test_generate_script(
+def test_create_script(
+    request,
     runner,
     cli_app,
     base_dir,
@@ -50,11 +51,12 @@ def test_generate_script(
     bootstrap_script,
     expected_output,
 ):
-    out_file = os.path.join(scratch_dir, "out.sh")
+    test_id = request.node.callspec.id
+    out_file = os.path.join(scratch_dir, f"{test_id}_out.sh")
 
     # Build the CLI command arguments
     cli_args = [
-        "script",
+        "job",
         "create",
         "--git",
         git_url,

@@ -7,13 +7,6 @@ import typer
 
 app = typer.Typer()
 
-BASEDIR = os.path.join(Path(__file__).parent, "templates")
-
-# Paths to templates
-DEFAULT_HEADER = os.path.join(BASEDIR, "default_header.template")
-ACCESS_HEADER = os.path.join(BASEDIR, "access_header.template")
-S3_TEMPLATE = os.path.join(BASEDIR, "s3.template")
-
 
 def load_file(file_path):
     """Utility function to open and read a file."""
@@ -23,12 +16,10 @@ def load_file(file_path):
         return f.read()
 
 
-class ScriptGenerator:
-    _TEMPLATES = {
-        "default_header": load_file(DEFAULT_HEADER),
-        "access_header": load_file(ACCESS_HEADER),
-        "s3_script": load_file(S3_TEMPLATE),
-    }
+class Creator:
+    JOB_TEMPLATE = os.path.join(
+        os.path.join(Path(__file__).parent.parent, "templates"), "job.template"
+    )
 
     def __init__(
         self,
@@ -50,6 +41,7 @@ class ScriptGenerator:
         self.output_file = Path(output_file)
         self.allow_access = allow_access
         self._config_data = {}
+        self._template = load_file(self.JOB_TEMPLATE)
 
     def _load_config(self):
         """Load and parse the configuration file."""
@@ -87,11 +79,10 @@ class ScriptGenerator:
             except subprocess.CalledProcessError as e:
                 raise RuntimeError(f"Failed to update repository: {e}")
 
-    def _replace_placeholders(self, template):
+    def _get_script(self):
         """Replace placeholders in the given template with configuration values."""
         for key, value in self._config_data.items():
-            template = template.replace(f"<<{key}>>", str(value))
-        return template
+            self._template = self._template.replace(f"<<{key}>>", str(value))
 
     def generate_script(self):
         """Generate the script based on the provided inputs."""
@@ -110,64 +101,20 @@ class ScriptGenerator:
 
         # load config
         self._load_config()
-        header = self._replace_placeholders(self._TEMPLATES["default_header"])
-        access_header = (
-            self._replace_placeholders(self._TEMPLATES["access_header"])
-            if self.allow_access
-            else ""
+        self._config_data["allow_access"] = (
+            "echo $(hostname) > <<river_home>>/.river/jobs/<<uuid_job_id>>/job.host\n; "
         )
-        s3_script = self._replace_placeholders(self._TEMPLATES["s3_script"])
-
-        bootstrap_content = ""
+        self._config_data["boostrap"] = "# No boostrap script\n"
         if bootstrap_script_path and bootstrap_script_path.exists():
             with bootstrap_script_path.open("r") as file:
-                bootstrap_content = self._replace_placeholders(file.read())
+                self._config_data["boostrap"] = file.read()
 
         with job_script_path.open("r") as file:
-            job_content = self._replace_placeholders(file.read())
+            self._config_data["script"] = file.read()
 
-        script_content = f"{header}\n# Boostrap:\n{bootstrap_content}\n{access_header}\n{s3_script}\n{job_content}"
+        # write script
+        self._get_script()
         with self.output_file.open("w") as file:
-            file.write(script_content)
+            file.write(self._template)
         os.chmod(self.output_file, 0o700)
-
         print(f"Generated script saved to {self.output_file}")
-
-
-@app.command()
-def create(
-    git: str = typer.Option(
-        ..., "--git", help="The Git repository URL to clone or fetch."
-    ),
-    version: str = typer.Option(
-        ..., "--version", help="The version to checkout or tag."
-    ),
-    config_file: str = typer.Option(
-        ..., "--config-file", help="Path to the JSON config file"
-    ),
-    tools_dir: str = typer.Option(..., "--tools-dir", help="Directory to store tools"),
-    job_script: str = typer.Option(..., "--job-script", help="Path to the job script"),
-    output_file: str = typer.Option(..., "--output-file", help="Output script file"),
-    bootstrap_script: str = typer.Option(
-        None, "--bootstrap-script", help="Optional bootstrap script"
-    ),
-    allow_access: bool = typer.Option(
-        False, "--allow-access", help="Allow access via port"
-    ),
-):
-    """Generate a job script based on the provided information."""
-    script_generator = ScriptGenerator(
-        git=git,
-        version=version,
-        config_file=config_file,
-        tools_dir=tools_dir,
-        job_script=job_script,
-        bootstrap_script=bootstrap_script,
-        output_file=output_file,
-        allow_access=allow_access,
-    )
-    script_generator.generate_script()
-
-
-if __name__ == "__main__":
-    app()

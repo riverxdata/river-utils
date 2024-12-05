@@ -1,0 +1,27 @@
+#!/bin/bash
+#SBATCH --job-name=<<uuid_job_id>>
+#SBATCH --time=<<times>>
+#SBATCH --output=<<river_home>>/.river/jobs/<<uuid_job_id>>/job.log
+#SBATCH --mem=<<memory>>
+#SBATCH --cpus-per-task=<<cpus>>
+source ~/.river.sh
+# Symlink analysis
+ln -sf <<river_home>>/.river/tools/<<analysis>> <<river_home>>/.river/jobs/<<uuid_job_id>>/<<analysis>>
+
+# Boostrap
+<<boostrap>>
+
+# Access job
+echo $(python3 -c "import socket; s=socket.socket(); s.bind(('', 0)); print(s.getsockname()[1]); s.close()") > <<river_home>>/.river/jobs/<<uuid_job_id>>/job.port
+echo $(hostname) > <<river_home>>/.river/jobs/<<uuid_job_id>>/job.host
+
+# Cloud storage
+trap 'umount $MOUNT_POINT || "S3 bucket is not mounted' EXIT
+set -euo pipefail
+
+# Mount using goofys
+MOUNT_POINT=<<river_home>>/.river/jobs/<<uuid_job_id>>/workspace 
+goofys --profile <<bucket_name>> --file-mode=0700 --dir-mode=0700 <<bucket_name>> $MOUNT_POINT
+
+# Main
+<<script>>

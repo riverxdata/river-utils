@@ -1,44 +1,8 @@
 import subprocess
 import os
-from datetime import timedelta
 from typing import List
-import typer
-
-app = typer.Typer()
-
-
-class Job:
-    def __init__(
-        self,
-        uuid_job_id,
-        slurm_job_id=None,
-        status=None,
-        url=None,
-        port=None,
-        host=None,
-        running_time=timedelta(seconds=0),
-    ):
-        self.uuid_job_id = uuid_job_id
-        self.slurm_job_id = slurm_job_id
-        self.status = status
-        self.url = url
-        self.port = port
-        self.host = host
-        self.running_time = running_time
-
-    def __repr__(self):
-        return f"Job(uuid={self.uuid_job_id}, slurm_id={self.slurm_job_id}, status={self.status}, running_time={self.running_time}, url={self.url}, host={self.host}, port={self.port})"
-
-    def to_dict(self):
-        return {
-            "uuid_job_id": self.uuid_job_id,
-            "slurm_job_id": self.slurm_job_id,
-            "status": self.status,
-            "url": self.url,
-            "port": self.port,
-            "host": self.host,
-            "running_time": str(self.running_time),
-        }
+from datetime import timedelta
+from ..objs.job import Job
 
 
 def get_slurm_jobs(jobs: List[Job]):
@@ -126,16 +90,3 @@ def get_jobs_info(jobs: List[Job]):
         sacct_status = None
     parsing_squeue_status(jobs, sacct_status, command="sacct")
     parsing_squeue_status(jobs, squeue_status)
-
-
-@app.command()
-def info(uuid_job_ids: List[str]):
-    """Fetch and display information about jobs."""
-    jobs = [Job(uuid_job_id=uuid) for uuid in uuid_job_ids]
-    get_jobs_info(jobs)
-    for job in jobs:
-        typer.echo(job.to_dict())
-
-
-if __name__ == "__main__":
-    app()
