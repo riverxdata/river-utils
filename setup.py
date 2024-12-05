@@ -1,4 +1,22 @@
 from setuptools import setup
+from setuptools.command.install import install
+import os
+import subprocess
+
+
+class PostInstallCommand(install):
+    """Custom command to run setup.sh after the package is installed."""
+
+    def run(self):
+        install.run(self)
+        setup_script_path = os.path.join(
+            os.path.dirname(__file__), "src", "bin", "setup.sh"
+        )
+        if os.path.exists(setup_script_path):
+            subprocess.check_call(["bash", setup_script_path])
+        else:
+            print(f"Warning: {setup_script_path} not found. Skipping setup script.")
+
 
 setup(
     name="river",
@@ -11,6 +29,9 @@ setup(
     url="https://github.com/riverbioinformatics/code_server.git",
     license="MIT",
     packages=["src"],
+    cmdclass={
+        "install": PostInstallCommand,
+    },
     package_dir={"src": "src"},
     include_package_data=True,
     install_requires=[

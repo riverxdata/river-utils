@@ -5,6 +5,14 @@ import os
 
 
 @pytest.fixture
+def home_dir(tmp_path):
+    temp_home = tmp_path / "home"
+    temp_home.mkdir()
+    os.environ["HOME"] = str(temp_home)
+    yield temp_home
+
+
+@pytest.fixture
 def runner():
     return CliRunner()
 
@@ -37,3 +45,19 @@ def job_script_dir(data_dir):
 @pytest.fixture
 def core_config(data_dir):
     return os.path.join(data_dir, "config", "core.json")
+
+
+@pytest.fixture(scope="module")
+def aws_config_file():
+    config_path = os.path.expanduser("~/.aws/config")
+    os.makedirs(os.path.dirname(config_path), exist_ok=True)
+
+    with open(config_path, "w") as config:
+        config.write(
+            f"[test-profile1]\nregion = {os.environ.get('REGION_NAME')}\naws_access_key_id = {os.environ.get('AWS_ACCESS_KEY_ID')}\naws_secret_access_key = {os.environ.get('AWS_SECRET_ACCESS_KEY')}"
+        )
+
+    yield config_path
+
+    if os.path.exists(config_path):
+        os.remove(config_path)
