@@ -37,6 +37,7 @@ import pytest
     ],
 )
 def test_create_script(
+    home_dir,
     request,
     runner,
     cli_app,

@@ -5,6 +5,14 @@ import os
 
 
 @pytest.fixture
+def home_dir(tmp_path):
+    temp_home = tmp_path / "home"
+    temp_home.mkdir()
+    os.environ["HOME"] = str(temp_home)
+    yield temp_home
+
+
+@pytest.fixture
 def runner():
     return CliRunner()
 
