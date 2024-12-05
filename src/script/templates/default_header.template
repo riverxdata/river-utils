@@ -1,9 +1,0 @@
-#!/bin/bash
-#SBATCH --job-name=<<uuid_job_id>>
-#SBATCH --time=<<times>>
-#SBATCH --output=<<river_home>>/.river/jobs/<<uuid_job_id>>/job.log
-#SBATCH --mem=<<memory>>
-#SBATCH --cpus-per-task=<<cpus>>
-source ~/.river.sh
-# Symlink analysis
-ln -sf <<river_home>>/.river/tools/<<analysis>> <<river_home>>/.river/jobs/<<uuid_job_id>>/<<analysis>>
