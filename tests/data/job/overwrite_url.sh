@@ -21,7 +21,7 @@ set -euo pipefail
 
 # Mount using goofys
 MOUNT_POINT=./.river/jobs/uuid/workspace 
-goofys --profile bucket_name --file-mode=0700 --dir-mode=0700 bucket_name $MOUNT_POINT
+goofys --profile bucket_name --file-mode=0700 --dir-mode=0700 --endpoint=endpoint bucket_name $MOUNT_POINT
 
 # Main
 openvscode-server --host 0.0.0.0 --port $PORT --server-base-path <<uuid_job_id>> --without-connection-token
