@@ -108,4 +108,4 @@ def test_s3_config_missing_region(runner, aws_config_file):
         ],
     )
     assert result.exit_code != 0
-    assert "Missing option '--region'" in result.output
+    check_error(result.exc_info, SystemExit, "2")
