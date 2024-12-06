@@ -4,9 +4,12 @@
 PYTHON := python3
 BUILD_DIR := dist
 
+dev:
+	. env/bin/activate
+	pip install -e .
 # Test the project
 test:
-	pytest -vvvv tests
+	RIVER_HOME="./tests/river_home" pytest --cov=src --cov-report=term
 
 # Build the project
 build:
@@ -20,5 +23,4 @@ clean:
 install:
 	pip install --upgrade --force-reinstall $(BUILD_DIR)/*.whl
 
-docs:
-	typer src/cloud/s3.py utils docs > 
+	

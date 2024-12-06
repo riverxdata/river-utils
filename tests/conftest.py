@@ -5,14 +5,6 @@ import os
 
 
 @pytest.fixture
-def home_dir(tmp_path):
-    temp_home = tmp_path / "home"
-    temp_home.mkdir()
-    os.environ["HOME"] = str(temp_home)
-    yield temp_home
-
-
-@pytest.fixture
 def runner():
     return CliRunner()
 
@@ -29,7 +21,7 @@ def base_dir():
 
 @pytest.fixture
 def scratch_dir(base_dir):
-    return os.path.join(base_dir, "scratch")
+    return "./tests/river_home"
 
 
 @pytest.fixture

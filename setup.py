@@ -36,6 +36,7 @@ setup(
     include_package_data=True,
     install_requires=[
         "typer>=0.14.0",
+        "python-dotenv>=1.0.1",
     ],
     entry_points={
         "console_scripts": [

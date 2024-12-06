@@ -5,15 +5,15 @@
 #SBATCH --mem=<<memory>>
 #SBATCH --cpus-per-task=<<cpus>>
 source ~/.river.sh
+
+# Boostrap
+<<bootstrap>>
+
 # Symlink analysis
 ln -sf <<river_home>>/.river/tools/<<analysis>> <<river_home>>/.river/jobs/<<uuid_job_id>>/<<analysis>>
 
-# Boostrap
-<<boostrap>>
-
 # Access job
-echo $(python3 -c "import socket; s=socket.socket(); s.bind(('', 0)); print(s.getsockname()[1]); s.close()") > <<river_home>>/.river/jobs/<<uuid_job_id>>/job.port
-echo $(hostname) > <<river_home>>/.river/jobs/<<uuid_job_id>>/job.host
+<<access>>
 
 # Cloud storage
 trap 'umount $MOUNT_POINT || "S3 bucket is not mounted' EXIT
