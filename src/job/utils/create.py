@@ -41,19 +41,43 @@ def get_tool_name(git: str) -> str:
     return Path(git).stem
 
 
-def clone_or_update_repo(git: str, TOOL_DIR: Path, version: str):
-    """Clone the repository if it doesn't exist, or update it if it does."""
+def clone_with_tag_only(git: str, tool_dir: Path, tag: str):
+    """
+    Clone a Git repository with the specified tag only.
+
+    :param git: The Git repository URL.
+    :param tag: The tag to checkout.
+    :param tool_dir: Directory where the repository will be cloned.
+    """
+    # Derive tool name from the Git URL and prepare the local path
     tool_name = get_tool_name(git)
-    local_repo = TOOL_DIR / tool_name
+    local_repo = tool_dir / tool_name
+
     try:
         if not local_repo.exists():
-            subprocess.check_call(["git", "clone", git, str(local_repo)])
-        else:
-            subprocess.check_call(["git", "-C", str(local_repo), "fetch"])
-            subprocess.check_call(["git", "-C", str(local_repo), "checkout", version])
+            # Clone directly with the specified tag
+            print(f"Cloning repository {git} with tag '{tag}' into {local_repo}...")
             subprocess.check_call(
-                ["git", "-C", str(local_repo), "pull", "origin", version]
+                [
+                    "git",
+                    "clone",
+                    "--branch",
+                    tag,
+                    "--single-branch",
+                    git,
+                    str(local_repo),
+                ]
             )
+        else:
+            print(f"Repository {local_repo} already exists. Skipping clone.")
+            # Optional: Verify if the correct tag is checked out
+            current_tag = subprocess.check_output(
+                ["git", "-C", str(local_repo), "describe", "--tags"], text=True
+            ).strip()
+            if current_tag != tag:
+                raise RuntimeError(
+                    f"Tag mismatch: expected '{tag}', but found '{current_tag}'."
+                )
     except subprocess.CalledProcessError as e:
         raise RuntimeError(f"Git operation failed: {e}")
 
@@ -81,7 +105,7 @@ def generate_script(git: str, version: str, job_id: str):
     tool_name = get_tool_name(git)
 
     # Clone or update repository
-    clone_or_update_repo(git, TOOL_DIR, version)
+    clone_with_tag_only(git, TOOL_DIR, version)
 
     # Load configuration
     config_data = load_config(config_file)
