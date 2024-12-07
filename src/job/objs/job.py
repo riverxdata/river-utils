@@ -1,4 +1,5 @@
 from datetime import timedelta
+import json
 
 
 class Job:
@@ -24,12 +25,14 @@ class Job:
         return f"Job(uuid={self.uuid_job_id}, slurm_id={self.slurm_job_id}, status={self.status}, running_time={self.running_time}, url={self.url}, host={self.host}, port={self.port})"
 
     def to_dict(self):
-        return {
-            "uuid_job_id": self.uuid_job_id,
-            "slurm_job_id": self.slurm_job_id,
-            "status": self.status,
-            "url": self.url,
-            "port": self.port,
-            "host": self.host,
-            "running_time": str(self.running_time),
-        }
+        return json.dumps(
+            {
+                "uuid_job_id": self.uuid_job_id,
+                "slurm_job_id": self.slurm_job_id,
+                "status": self.status,
+                "url": self.url,
+                "port": self.port,
+                "host": self.host,
+                "running_time": str(self.running_time),
+            }
+        )

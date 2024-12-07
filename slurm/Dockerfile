@@ -58,30 +58,26 @@ EXPOSE 22 6817 6818 3306
 COPY my.cnf /etc/mysql/my.cnf
 
 USER root
-# add system user slurm
 RUN usermod -s /bin/bash slurm
-# Start services
 
 # Install and configure river-utils
 USER river
 WORKDIR /home/river
 COPY ./river-1.0.0-py3-none-any.whl .
 RUN pip install river-1.0.0-py3-none-any.whl
+ENV PATH=$PATH:/home/river/.local/bin
+RUN river setup install
+RUN mkdir -p /home/river/.river/jobs/uuid/
+COPY ./job.sh /home/river/.river/jobs/uuid/job.sh
+COPY ./test-slurmdbd.sh .
 
 USER root
-RUN bash -c "\
-    /etc/init.d/munge start && \
-    service mysql start && \
-    /usr/sbin/sshd && \
-    slurmdbd && \
-    slurmctld && \
-    sleep 10 && \
-    sacctmgr -i add cluster localcluster && \
-    sacctmgr -i --quiet add account river Cluster=localcluster && \
-    sacctmgr -i --quiet add user river account=river DefaultAccount=root"
-CMD ["bash", "-c", "/etc/init.d/munge start && \
-    service mysql start && \
-    /usr/sbin/sshd && \
-    slurmdbd && \
-    slurmctld && \
-    slurmd -D"]
+RUN chmod u+x /home/river/test-slurmdbd.sh
+# RUN bash -c "/home/river/test-slurmdbd.sh"
+
+# CMD ["bash", "-c", "/etc/init.d/munge start && \
+#     service mysql start && \
+#     /usr/sbin/sshd && \
+#     slurmdbd && \
+#     slurmctld && \
+#     slurmd -D"]
