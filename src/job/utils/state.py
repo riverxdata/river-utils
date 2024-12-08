@@ -61,7 +61,7 @@ def parse_duration(duration_str):
     return timedelta(seconds=total_seconds)
 
 
-def parsing_squeue_status(jobs: List[Job], states: str, command="squeue"):
+def parsing_squeue_status(jobs: List[Job], states: str):
     if states:
         lines = states.split("\n")[1:-1]
         for line in lines:
@@ -81,12 +81,16 @@ def get_jobs_info(jobs: List[Job]):
     squeue_cmd = f"squeue --jobs {job_ids} --format='%.18i %.9T %.10M'"
     sacct_cmd = f"sacct --jobs {job_ids} --format='JobID,State,Elapsed'"
     try:
-        squeue_status = subprocess.check_output(squeue_cmd, shell=True).decode("utf-8")
+        squeue_status = subprocess.check_output(
+            squeue_cmd, shell=True, stderr=subprocess.DEVNULL
+        ).decode("utf-8")
     except subprocess.CalledProcessError:
         squeue_status = None
     try:
-        sacct_status = subprocess.check_output(sacct_cmd, shell=True).decode("utf-8")
+        sacct_status = subprocess.check_output(
+            sacct_cmd, shell=True, stderr=subprocess.DEVNULL
+        ).decode("utf-8")
     except subprocess.CalledProcessError:
         sacct_status = None
-    parsing_squeue_status(jobs, sacct_status, command="sacct")
+    parsing_squeue_status(jobs, sacct_status)
     parsing_squeue_status(jobs, squeue_status)

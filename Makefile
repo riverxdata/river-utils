@@ -10,14 +10,17 @@ dev:
 	pip install -e .
 # Test the project
 test:
-	RIVER_HOME="./tests/river_home" pytest --cov=src --cov-report=term
+	RIVER_HOME="./tests/river_home" pytest --cov=src --cov-report=term tests/test_setup_install.py
 
 slurm: ./dist/river-$(VERSION)-py3-none-any.whl
 	cp ./dist/river-$(VERSION)-py3-none-any.whl slurm/river-$(VERSION)-py3-none-any.whl
 	docker build slurm -t river-utils-slurm:$(VERSION)
 
 slurm-start: ./dist/river-$(VERSION)-py3-none-any.whl slurm
-	docker run -it -p 22:22 river-utils-slurm:$(VERSION) 
+	docker run --rm -d \
+	-p 22:22 \
+	-v ./dist:/home/river/dist \
+	river-utils-slurm:$(VERSION)
 
 # Build the project
 build:

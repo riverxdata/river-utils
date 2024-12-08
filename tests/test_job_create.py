@@ -51,7 +51,6 @@ def test_create_script(
     result = runner.invoke(cli_app, cli_args)
 
     # Check exit code
-    print(result.output)
     assert result.exit_code == 0
 
     # Check content of the output file against the expected file

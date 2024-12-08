@@ -82,19 +82,21 @@ def install(
     # Install singularity and nextflow using micromamba
     print("Installing Singularity and Nextflow...")
     run_command(
-        f"export MAMBA_ROOT_PREFIX={river_home}/.images/micromamba && {river_home_tools}/micromamba create -n river conda-forge::singularity bioconda::nextflow -y"
+        f"export MAMBA_ROOT_PREFIX={river_home}/.river/images/micromamba && {river_home_tools}/micromamba create -n river conda-forge::singularity bioconda::nextflow -y"
     )
 
     # Create .river.sh for environment variables
-    RIVER_BIN = os.path.dirname(subprocess.check_output("which river", shell=True))
+    RIVER_BIN = os.path.dirname(
+        subprocess.check_output("which river", shell=True)
+    ).decode("utf-8")
     print("Creating .river.sh to export river utilities' environment variables...")
     with open(f"{river_home}/.river.sh", "w") as f:
         f.write(
             f"""
 export RIVER_HOME="{river_home}"
 export RIVER_HOME_TOOLS=${{RIVER_HOME}}/.river/tools
-export MAMBA_ROOT_PREFIX=${{RIVER_HOME}}/.images/micromamba
-export SINGULARITY_CACHE_DIR=${{RIVER_HOME}}/.images/singularities
+export MAMBA_ROOT_PREFIX=${{RIVER_HOME}}/.river/.images/micromamba
+export SINGULARITY_CACHE_DIR=${{RIVER_HOME}}/.river/.images/singularities
 export NXF_SINGULARITY_CACHEDIR=$SINGULARITY_CACHE_DIR
 export PATH=${{RIVER_HOME_TOOLS}}:${{RIVER_HOME_TOOLS}}/openvscode-server-v{openvscode_server_version}-linux-x64/bin:${RIVER_BIN}:$PATH
 eval "$(micromamba shell hook -s posix)"

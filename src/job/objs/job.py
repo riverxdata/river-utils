@@ -27,12 +27,18 @@ class Job:
     def to_dict(self):
         return json.dumps(
             {
-                "uuid_job_id": self.uuid_job_id,
-                "slurm_job_id": self.slurm_job_id,
-                "status": self.status,
-                "url": self.url,
-                "port": self.port,
-                "host": self.host,
-                "running_time": str(self.running_time),
+                key: value
+                for key, value in {
+                    "uuid_job_id": self.uuid_job_id,
+                    "slurm_job_id": self.slurm_job_id,
+                    "status": self.status,
+                    "url": self.url,
+                    "port": self.port,
+                    "host": self.host,
+                    "running_time": (
+                        str(self.running_time) if self.running_time else None
+                    ),
+                }.items()
+                if value not in (None, "")
             }
         )
