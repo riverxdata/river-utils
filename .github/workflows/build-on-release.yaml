@@ -22,17 +22,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install build
 
-    - name: Get artifact file
-      id: get_artifact
-      run: |
-        file=$(ls dist/*.whl | head -n 1)
-        echo "file=$file" >> $GITHUB_ENV
-        echo "filename=$(basename $file)" >> $GITHUB_ENV
+      - name: Get artifact file
+        id: get_artifact
+        run: |
+          file=$(ls dist/*.whl | head -n 1)
+          echo "file=$file" >> $GITHUB_ENV
+          echo "filename=$(basename $file)" >> $GITHUB_ENV
 
-    - name: Upload artifact to release
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ${{ env.file }}
-        asset_name: ${{ env.filename }}
-        asset_content_type: application/zip
+      - name: Upload artifact to release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ env.file }}
+          asset_name: ${{ env.filename }}
+          asset_content_type: application/zip
