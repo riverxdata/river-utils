@@ -4,6 +4,10 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release (e.g., v1.0.0)"
+        required: false
 
 jobs:
   build-and-upload:
@@ -31,10 +35,21 @@ jobs:
           echo "file=$file" >> $GITHUB_ENV
           echo "filename=$(basename $file)" >> $GITHUB_ENV
 
+      - name: Create release (if manual dispatch)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: ${{ github.event.inputs.version }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Upload artifact to release
         uses: actions/upload-release-asset@v1
         with:
-          upload_url: ${{ github.event.release.upload_url }}
+          upload_url: ${{ github.event.release.upload_url || steps.create-release.outputs.upload_url }}
           asset_path: ${{ env.file }}
           asset_name: ${{ env.filename }}
           asset_content_type: application/zip
