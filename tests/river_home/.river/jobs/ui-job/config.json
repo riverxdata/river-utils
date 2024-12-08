@@ -1,0 +1,9 @@
+{
+  "cpus": 1,
+  "memory": "1G",
+  "times": "1:00:00",
+  "uuid_job_id": "uuid",
+  "bucket_name": "bucket_name",
+  "project_name": "project_name",
+  "endpoint": "endpoint"
+}
