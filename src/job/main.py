@@ -36,7 +36,3 @@ def info(uuid_job_ids: List[str]):
     get_jobs_info(jobs)
     for job in jobs:
         typer.echo(job.to_dict())
-
-
-if __name__ == "__main__":
-    job_app()
