@@ -5,7 +5,6 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-
 JOB_TEMPLATE_PATH = Path(__file__).parent.parent / "templates" / "job.template"
 
 
