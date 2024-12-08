@@ -129,7 +129,3 @@ def clean(
     except Exception as e:
         print(f"Error cleaning up: {e}")
         raise typer.Exit()
-
-
-if __name__ == "__main__":
-    setup_app()

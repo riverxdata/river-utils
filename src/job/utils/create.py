@@ -3,10 +3,8 @@ import subprocess
 import json
 import os
 from pathlib import Path
-import typer
 from dotenv import load_dotenv
 
-create_app = typer.Typer()
 
 JOB_TEMPLATE_PATH = Path(__file__).parent.parent / "templates" / "job.template"
 
@@ -148,4 +146,4 @@ def generate_script(git: str, version: str, job_id: str):
     output_file.parent.mkdir(parents=True, exist_ok=True)
     output_file.write_text(filled_template)
     output_file.chmod(0o700)
-    typer.echo(f"Generated script saved to {output_file}")
+    print(f"Generated script saved to {output_file}")
