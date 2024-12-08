@@ -35,17 +35,6 @@ jobs:
           echo "file=$file" >> $GITHUB_ENV
           echo "filename=$(basename $file)" >> $GITHUB_ENV
           
-      - name: Create release (if manual dispatch)
-        if: github.event_name == 'workflow_dispatch'
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ github.event.inputs.version }}
-          release_name: ${{ github.event.inputs.version }}
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Upload artifact to release
         uses: actions/upload-release-asset@v1
         with:
