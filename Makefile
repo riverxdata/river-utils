@@ -1,15 +1,16 @@
-.PHONY: build test clean install
+.PHONY: build test clean install slurm
 
 # Variables
 PYTHON := python3
 BUILD_DIR := dist
+VERSION := 1.0.0
 
 dev:
 	. env/bin/activate
 	pip install -e .
-# Test the project
+
 test:
-	RIVER_HOME="./tests/river_home" pytest --cov=src --cov-report=term
+	RIVER_HOME="./tests/river_home" pytest --cov=src --cov-report=term tests
 
 # Build the project
 build:
