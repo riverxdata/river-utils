@@ -90,13 +90,13 @@ def install(
         subprocess.check_output("which river", shell=True)
     ).decode("utf-8")
     print("Creating .river.sh to export river utilities' environment variables...")
-    with open(f"{river_home}/.river.sh", "w") as f:
+    with open(f"{os.path.expanduser('~')}/.river.sh", "w") as f:
         f.write(
             f"""
 export RIVER_HOME="{river_home}"
 export RIVER_HOME_TOOLS=${{RIVER_HOME}}/.river/tools
-export MAMBA_ROOT_PREFIX=${{RIVER_HOME}}/.river/.images/micromamba
-export SINGULARITY_CACHE_DIR=${{RIVER_HOME}}/.river/.images/singularities
+export MAMBA_ROOT_PREFIX=${{RIVER_HOME}}/.river/images/micromamba
+export SINGULARITY_CACHE_DIR=${{RIVER_HOME}}/.river/images/singularities
 export NXF_SINGULARITY_CACHEDIR=$SINGULARITY_CACHE_DIR
 export PATH=${{RIVER_HOME_TOOLS}}:${{RIVER_HOME_TOOLS}}/openvscode-server-v{openvscode_server_version}-linux-x64/bin:${RIVER_BIN}:$PATH
 eval "$(micromamba shell hook -s posix)"

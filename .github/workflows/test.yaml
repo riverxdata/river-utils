@@ -2,6 +2,7 @@ name: Run Tests with Coverage on Multiple Python Versions
 on:
   pull_request:
     branches:
+      - main
       - dev
       - features/**
       - hotfix/**
@@ -29,4 +30,5 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          make test
+          make test-base
+          make test-install
