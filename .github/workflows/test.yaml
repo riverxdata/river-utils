@@ -2,6 +2,7 @@ name: Run Tests with Coverage on Multiple Python Versions
 on:
   pull_request:
     branches:
+      - main
       - dev
       - features/**
       - hotfix/**
