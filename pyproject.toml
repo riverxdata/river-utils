@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "river"
+version = "1.0.1"
+description = "The CLI tool for utilizing data analysis"
+readme = "README.md"
+authors = ["Thanh-Giang (River) Tan Nguyen <nttg8100@gmail.com>"]
+license = "MIT"
+homepage = "https://github.com/riverbioinformatics/code_server.git"
+repository = "https://github.com/riverbioinformatics/code_server.git"
+keywords = ["CLI", "data analysis"]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+include = ["src/job/templates"]
+[tool.poetry.dependencies]
+python = ">=3.7"
+typer = ">=0.14.0"
+python-dotenv = ">=1.0.1"
+
+[tool.poetry.scripts]
+river = "src.cli:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
