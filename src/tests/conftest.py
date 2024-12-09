@@ -1,6 +1,6 @@
 import pytest
 from typer.testing import CliRunner
-from src.cli import app
+from river.cli import app
 import os
 
 
@@ -21,7 +21,7 @@ def base_dir():
 
 @pytest.fixture
 def scratch_dir(base_dir):
-    return "./tests/river_home"
+    return os.path.join(base_dir, "river_home")
 
 
 @pytest.fixture

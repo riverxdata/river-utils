@@ -10,10 +10,10 @@ dev:
 	pip install -e .
 
 test-install:
-	RIVER_HOME="./tests/river_home_test_setup" pytest -k "setup" --cov=src --cov-report=term
+	RIVER_HOME="./src/tests/river_home_test_setup" pytest src/tests -k "setup" --cov=src --cov-report=term
 
 test-base:
-	RIVER_HOME="./tests/river_home" pytest --cov=src -k "not setup" --cov-report=term tests/
+	RIVER_HOME="./src/tests/river_home" pytest src/tests --cov=src -k "not setup" --cov-report=term
 
 # Build the project
 build:

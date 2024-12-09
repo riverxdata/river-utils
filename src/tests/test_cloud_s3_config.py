@@ -1,5 +1,5 @@
 import pytest
-from src.cli import cloud_app
+from river.cli import cloud_app
 
 
 def check_error(exc_info, expect_error_class, expect_error_message):
