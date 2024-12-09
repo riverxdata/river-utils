@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="river",
-    version="1.0.1",
+    version="1.0.0",
     description="The cli tool for utilizing the data analysis",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
