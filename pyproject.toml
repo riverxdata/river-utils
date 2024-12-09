@@ -21,7 +21,7 @@ typer = ">=0.14.0"
 python-dotenv = ">=1.0.1"
 
 [tool.poetry.scripts]
-river = "src.cli:main"
+river = "river.cli:main"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
