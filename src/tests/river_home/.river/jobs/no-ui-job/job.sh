@@ -17,11 +17,12 @@ ln -sf ./src/tests/river_home/.river/tools/<<analysis>> ./src/tests/river_home/.
 # Tool does not have set the access
 
 # Cloud storage
-trap 'umount $MOUNT_POINT || "S3 bucket is not mounted' EXIT
+trap 'umount $MOUNT_POINT || "S3 bucket is not mounted"' EXIT
 set -euo pipefail
 
 # Mount using goofys
 MOUNT_POINT=./src/tests/river_home/.river/jobs/uuid/workspace 
+mkdir -p $MOUNT_POINT
 goofys --profile bucket_name --file-mode=0700 --dir-mode=0700 --endpoint=endpoint bucket_name $MOUNT_POINT
 
 # Main

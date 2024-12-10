@@ -67,14 +67,6 @@ def clone_with_tag_only(git: str, tool_dir: Path, tag: str):
             )
         else:
             print(f"Repository {local_repo} already exists. Skipping clone.")
-            # Optional: Verify if the correct tag is checked out
-            current_tag = subprocess.check_output(
-                ["git", "-C", str(local_repo), "describe", "--tags"], text=True
-            ).strip()
-            if current_tag != tag:
-                raise RuntimeError(
-                    f"Tag mismatch: expected '{tag}', but found '{current_tag}'."
-                )
     except subprocess.CalledProcessError as e:
         raise RuntimeError(f"Git operation failed: {e}")
 

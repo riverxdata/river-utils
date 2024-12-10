@@ -16,11 +16,12 @@ ln -sf <<river_home>>/.river/tools/<<analysis>> <<river_home>>/.river/jobs/<<uui
 <<access>>
 
 # Cloud storage
-trap 'umount $MOUNT_POINT || "S3 bucket is not mounted' EXIT
+trap 'umount $MOUNT_POINT || "S3 bucket is not mounted"' EXIT
 set -euo pipefail
 
 # Mount using goofys
 MOUNT_POINT=<<river_home>>/.river/jobs/<<uuid_job_id>>/workspace 
+mkdir -p $MOUNT_POINT
 goofys --profile <<bucket_name>> --file-mode=0700 --dir-mode=0700 --endpoint=<<endpoint>> <<bucket_name>> $MOUNT_POINT
 
 # Main

@@ -19,11 +19,12 @@ echo $(hostname) > ./src/tests/river_home/.river/jobs/uuid/job.host
 
 
 # Cloud storage
-trap 'umount $MOUNT_POINT || "S3 bucket is not mounted' EXIT
+trap 'umount $MOUNT_POINT || "S3 bucket is not mounted"' EXIT
 set -euo pipefail
 
 # Mount using goofys
 MOUNT_POINT=./src/tests/river_home/.river/jobs/uuid/workspace 
+mkdir -p $MOUNT_POINT
 goofys --profile bucket_name --file-mode=0700 --dir-mode=0700 --endpoint=endpoint bucket_name $MOUNT_POINT
 
 # Main
