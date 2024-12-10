@@ -7,7 +7,7 @@
 source ~/.river.sh
 
 # Boostrap
-echo <<uuid_job_id>> > <<river_home>>/.river/jobs/<<uuid_job_id>>/job.url
+echo uuid > ./src/tests/river_home/.river/jobs/uuid/job.url
 
 # Symlink analysis
 ln -sf ./src/tests/river_home/.river/tools/<<analysis>> ./src/tests/river_home/.river/jobs/uuid/<<analysis>>

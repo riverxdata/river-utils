@@ -128,7 +128,9 @@ def generate_script(git: str, version: str, job_id: str):
 
     bootstrap_script_path = TOOL_DIR / tool_name / "river" / "bootstrap.sh"
     if bootstrap_script_path.exists():
-        config_data["bootstrap"] = load_file(bootstrap_script_path)
+        config_data["bootstrap"] = replace_placeholders(
+            load_file(bootstrap_script_path), config_data
+        )
     else:
         config_data["bootstrap"] = "# No bootstrap script\n"
 
