@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "river"
-version = "1.0.1"
+version = "1.0.2"
 description = "The CLI tool for utilizing data analysis"
 readme = "README.md"
 authors = ["Thanh-Giang (River) Tan Nguyen <nttg8100@gmail.com>"]
