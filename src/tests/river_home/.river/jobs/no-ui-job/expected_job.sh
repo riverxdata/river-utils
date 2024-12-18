@@ -11,7 +11,7 @@ source ~/.river.sh
 
 
 # Symlink analysis
-ln -sf ./src/tests/river_home/.river/tools/<<analysis>> ./src/tests/river_home/.river/jobs/uuid/<<analysis>>
+ln -sf ./src/tests/river_home/.river/tools/bioinfor-wf-quality-control-ngs ./src/tests/river_home/.river/jobs/uuid/bioinfor-wf-quality-control-ngs
 
 # Access job
 # Tool does not have set the access
@@ -30,6 +30,6 @@ sleep 1
 echo "Start analysis"
 nextflow run ./river-quality-control-ngs \
     -profile singularity \
-    --reads "workspace<<fastqs_dir>>*{1,2}.fq" \
+    --reads "workspace/fastqs_dir/*{1,2}.fq" \
     -work-dir "workspace/work" \
-    --outdir "workspace<<output_folder>>"
+    --outdir "workspace/output_folder/"

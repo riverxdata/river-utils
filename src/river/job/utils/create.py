@@ -98,18 +98,18 @@ def generate_script(git: str, version: str, job_id: str):
 
     # Load configuration
     config_data = load_config(config_file)
-
+    config_data["analysis"] = tool_name
     # Prepare job script
     env_path = TOOL_DIR / tool_name / "river" / "env.sh"
 
     if env_path and load_dotenv(env_path) and os.environ.get("ALLOW_ACCESS") == "true":
         render_access = replace_placeholders(
             (
-                'echo $(python3 -c "import socket; '
+                'PORT=$(python3 -c "import socket; '
                 "s=socket.socket(); "
                 "s.bind(('', 0)); "
                 "print(s.getsockname()[1]); "
-                's.close()") > <<river_home>>/.river/jobs/<<uuid_job_id>>/job.port\n'
+                's.close()")\n echo $PORT > <<river_home>>/.river/jobs/<<uuid_job_id>>/job.port\n'
                 "echo $(hostname) > <<river_home>>/.river/jobs/<<uuid_job_id>>/job.host\n"
             ),
             config_data,
@@ -129,7 +129,9 @@ def generate_script(git: str, version: str, job_id: str):
     main_script_path = TOOL_DIR / tool_name / "river" / "main.sh"
     if not main_script_path.exists():
         raise FileNotFoundError(f"Job script not found: {main_script_path}")
-    config_data["script"] = load_file(main_script_path)
+    config_data["script"] = replace_placeholders(
+        load_file(main_script_path), config_data
+    )
 
     # Render
     template = load_file(JOB_TEMPLATE_PATH)
