@@ -109,7 +109,7 @@ def generate_script(git: str, version: str, job_id: str):
                 "s=socket.socket(); "
                 "s.bind(('', 0)); "
                 "print(s.getsockname()[1]); "
-                's.close()")\n echo $PORT > <<river_home>>/.river/jobs/<<uuid_job_id>>/job.port\n'
+                's.close()")\necho $PORT > <<river_home>>/.river/jobs/<<uuid_job_id>>/job.port\n'
                 "echo $(hostname) > <<river_home>>/.river/jobs/<<uuid_job_id>>/job.host\n"
             ),
             config_data,

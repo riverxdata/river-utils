@@ -13,7 +13,8 @@ echo uuid > ./src/tests/river_home/.river/jobs/uuid/job.url
 ln -sf ./src/tests/river_home/.river/tools/data-sw-visual-studio-code-server ./src/tests/river_home/.river/jobs/uuid/data-sw-visual-studio-code-server
 
 # Access job
-echo $(python3 -c "import socket; s=socket.socket(); s.bind(('', 0)); print(s.getsockname()[1]); s.close()") > ./src/tests/river_home/.river/jobs/uuid/job.port
+PORT=$(python3 -c "import socket; s=socket.socket(); s.bind(('', 0)); print(s.getsockname()[1]); s.close()")
+echo $PORT > ./src/tests/river_home/.river/jobs/uuid/job.port
 echo $(hostname) > ./src/tests/river_home/.river/jobs/uuid/job.host
 
 
