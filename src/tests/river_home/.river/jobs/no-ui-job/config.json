@@ -5,5 +5,7 @@
   "uuid_job_id": "uuid",
   "bucket_name": "bucket_name",
   "project_name": "project_name",
-  "endpoint": "endpoint"
+  "endpoint": "endpoint",
+  "fastqs_dir": "/fastqs_dir/",
+  "output_folder": "/output_folder/"
 }

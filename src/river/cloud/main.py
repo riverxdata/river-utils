@@ -39,9 +39,7 @@ def s3_config(
     if os.path.exists(aws_config_file):
         with open(aws_config_file, "r") as config_file:
             if f"[{profile_name}]" in config_file.read():
-                raise ValueError(
-                    f"Profile '{profile_name}' already exists in {aws_config_file}."
-                )
+                print(f"Profile '{profile_name}' already exists in {aws_config_file}.")
 
     print(f"Adding profile '{profile_name}' to AWS config...")
     with open(aws_config_file, "a") as config_file:
