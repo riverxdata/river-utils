@@ -91,8 +91,8 @@ def test_s3_config_existing_profile(runner, aws_config_file):
             "test-secret-key",
         ],
     )
-    assert result.exit_code != 0
-    check_error(result.exc_info, ValueError, "already exists")
+    assert result.exit_code == 0
+    assert "already exists" in result.output
 
 
 def test_s3_config_missing_region(runner, aws_config_file):
