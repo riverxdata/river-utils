@@ -10,7 +10,7 @@ source ~/.river.sh
 <<bootstrap>>
 
 # Symlink analysis
-ln -sf <<river_home>>/.river/tools/<<analysis>> <<river_home>>/.river/jobs/<<uuid_job_id>>/<<analysis>>
+ln -sf <<river_home>>/.river/tools/<<analysis>> <<river_home>>/.river/jobs/<<uuid_job_id>>/<<tool_name>>
 
 # Access job
 <<access>>

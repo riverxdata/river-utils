@@ -11,7 +11,7 @@ source ~/.river.sh
 
 
 # Symlink analysis
-ln -sf ./src/tests/river_home/.river/tools/bioinfor-wf-quality-control-ngs ./src/tests/river_home/.river/jobs/uuid/bioinfor-wf-quality-control-ngs
+ln -sf ./src/tests/river_home/.river/tools/bioinfor-wf-quality-control-ngs/0.0.0 ./src/tests/river_home/.river/jobs/uuid/bioinfor-wf-quality-control-ngs
 
 # Access job
 # Tool does not have set the access

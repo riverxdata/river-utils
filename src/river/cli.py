@@ -4,7 +4,7 @@ from .setup.main import setup_app
 from .cloud.main import cloud_app
 from .job.main import job_app
 
-__version__ = "1.0.3"
+__version__ = "1.0.4"
 
 
 def version_callback(value: bool):

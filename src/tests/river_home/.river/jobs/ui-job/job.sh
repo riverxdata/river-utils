@@ -11,7 +11,7 @@ source ~/.river.sh
 
 
 # Symlink analysis
-ln -sf ./src/tests/river_home/.river/tools/data-sw-jupyterlab ./src/tests/river_home/.river/jobs/uuid/data-sw-jupyterlab
+ln -sf ./src/tests/river_home/.river/tools/data-sw-jupyterlab/0.0.0 ./src/tests/river_home/.river/jobs/uuid/data-sw-jupyterlab
 
 # Access job
 PORT=$(python3 -c "import socket; s=socket.socket(); s.bind(('', 0)); print(s.getsockname()[1]); s.close()")

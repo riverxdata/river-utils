@@ -38,18 +38,15 @@ def get_tool_name(git: str) -> str:
     return Path(git).stem
 
 
-def clone_with_tag_only(git: str, tool_dir: Path, tag: str):
+def clone_with_tag_only(git: str, local_repo: Path, tag: str):
     """
     Clone a Git repository with the specified tag only.
 
     :param git: The Git repository URL.
     :param tag: The tag to checkout.
-    :param tool_dir: Directory where the repository will be cloned.
+    :param local_repo: Directory where the repository will be cloned with relative tag, ex: /tool_a/v1.0.0
     """
     # Derive tool name from the Git URL and prepare the local path
-    tool_name = get_tool_name(git)
-    local_repo = tool_dir / tool_name
-
     try:
         if not local_repo.exists():
             # Clone directly with the specified tag
@@ -93,14 +90,17 @@ def generate_script(git: str, version: str, job_id: str):
     config_file = JOB_DIR / job_id / "config.json"
     tool_name = get_tool_name(git)
 
+    repo_name = f"{tool_name}/{version}"
     # Clone or update repository
-    clone_with_tag_only(git, TOOL_DIR, version)
+    TOOL_TAG_DIR = TOOL_DIR / repo_name
+    clone_with_tag_only(git, TOOL_TAG_DIR, version)
 
     # Load configuration
     config_data = load_config(config_file)
-    config_data["analysis"] = tool_name
+    config_data["analysis"] = repo_name
+    config_data["tool_name"] = tool_name
     # Prepare job script
-    env_path = TOOL_DIR / tool_name / "river" / "env.sh"
+    env_path = TOOL_TAG_DIR / "river" / "env.sh"
 
     if env_path and load_dotenv(env_path) and os.environ.get("ALLOW_ACCESS") == "true":
         render_access = replace_placeholders(
@@ -118,7 +118,7 @@ def generate_script(git: str, version: str, job_id: str):
     else:
         config_data["access"] = "# Tool does not have set the access"
 
-    bootstrap_script_path = TOOL_DIR / tool_name / "river" / "bootstrap.sh"
+    bootstrap_script_path = TOOL_TAG_DIR / "river" / "bootstrap.sh"
     if bootstrap_script_path.exists():
         config_data["bootstrap"] = replace_placeholders(
             load_file(bootstrap_script_path), config_data
@@ -126,7 +126,7 @@ def generate_script(git: str, version: str, job_id: str):
     else:
         config_data["bootstrap"] = "# No bootstrap script\n"
 
-    main_script_path = TOOL_DIR / tool_name / "river" / "main.sh"
+    main_script_path = TOOL_TAG_DIR / "river" / "main.sh"
     if not main_script_path.exists():
         raise FileNotFoundError(f"Job script not found: {main_script_path}")
     config_data["script"] = replace_placeholders(
