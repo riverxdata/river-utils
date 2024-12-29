@@ -10,7 +10,7 @@ source ~/.river.sh
 <<bootstrap>>
 
 # Symlink analysis
-ln -sf <<river_home>>/.river/tools/<<analysis>> <<river_home>>/.river/jobs/<<uuid_job_id>>/<<tool_name>>
+ln -sf <<river_home>>/.river/tools/<<analysis>> <<river_home>>/.river/jobs/<<uuid_job_id>>/analysis
 
 # Access job
 <<access>>
@@ -25,4 +25,5 @@ mkdir -p $MOUNT_POINT
 goofys --profile <<bucket_name>> --file-mode=0700 --dir-mode=0700 --endpoint=<<endpoint>> <<bucket_name>> $MOUNT_POINT
 
 # Main
+cd <<river_home>>/.river/jobs/<<uuid_job_id>>
 <<script>>

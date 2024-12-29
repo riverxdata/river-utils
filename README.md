@@ -10,9 +10,12 @@ nf-utils is a versatile Command-Line Interface (CLI) tool designed to streamline
 - Required system utilities: wget, curl
 
 ### Development Version
-To install the development version, use the following commands:
+To install the development version, use the following commands for x64, for another CPU architect, follow [here](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html):
 ```bash
-git clone https://github.com/giangbioinformatics/nf-utils.git -b main
+# adjust where you want to install micromamba
+
+
+git clone https://github.com/giangbioinformatics/nf-utils.git -b dev
 cd nf-utils 
 make build
 pip install dist/*.whl
@@ -29,7 +32,7 @@ pip install nf-utils
 Overview
 The nf-utils CLI consists of three main subcommands:
 
-+ `cloud`: Manage AWS S3 configurations and mount buckets using Goofys.
++ `cloud`: Manage AWS S3 configurations and mount buckets using Goofys. The current aws cli does not support region
 + `job`: Manage and generate job scripts for HPC systems and River web server.
 + `setup`: Set up standard tools for bioinformatics analysis.
 
@@ -40,8 +43,6 @@ Subcommands:
 + s3-config: Add a new AWS profile to your local configuration.
 ```bash
 cloud s3-config --profile-name PROFILE_NAME --region REGION --aws-access-key-id AWS_ACCESS_KEY_ID --aws-secret-access-key AWS_SECRET_ACCESS_KEY
-cloud s3-mount BUCKET_NAME --profile-name PROFILE_NAME
-cloud s3-umount BUCKET_NAME
 ```
 
 ### 2.`job`
