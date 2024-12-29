@@ -99,6 +99,7 @@ def generate_script(git: str, version: str, job_id: str):
     config_data = load_config(config_file)
     config_data["analysis"] = repo_name
     config_data["tool_name"] = tool_name
+
     # Prepare job script
     env_path = TOOL_TAG_DIR / "river" / "env.sh"
 

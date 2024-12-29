@@ -7,6 +7,7 @@ from .job.main import job_app
 __version__ = "1.0.4"
 
 
+
 def version_callback(value: bool):
     if value:
         print(f"River CLI Version: {__version__}")
