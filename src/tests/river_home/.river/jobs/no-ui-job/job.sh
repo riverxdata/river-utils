@@ -11,7 +11,6 @@ source ~/.river.sh
 
 
 # Symlink analysis
-
 ln -sf ./src/tests/river_home/.river/tools/bioinfor-wf-quality-control-ngs/0.0.0 ./src/tests/river_home/.river/jobs/uuid/analysis
 
 # Access job
@@ -30,7 +29,6 @@ goofys --profile bucket_name --file-mode=0700 --dir-mode=0700 --endpoint=endpoin
 cd ./src/tests/river_home/.river/jobs/uuid
 sleep 1
 echo "Start analysis"
-
 nextflow run ./analysis \
     -profile conda \
     --reads "workspace/fastqs_dir/*{1,2}.fq" \

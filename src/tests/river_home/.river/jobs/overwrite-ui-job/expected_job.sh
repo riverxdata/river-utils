@@ -10,7 +10,6 @@ source ~/.river.sh
 echo uuid > ./src/tests/river_home/.river/jobs/uuid/job.url
 
 # Symlink analysis
-
 ln -sf ./src/tests/river_home/.river/tools/data-sw-visual-studio-code-server/0.0.0 ./src/tests/river_home/.river/jobs/uuid/analysis
 
 # Access job
