@@ -9,7 +9,6 @@ RIVER_VERSION=${2:-v1.0.3}
 echo "River CLI tools version v1.0.3 is used by default"
 MICROMAMBA_VERSION=2.0.5
 RIVER_BIN=$RIVER_HOME/.river/bin
-echo $RIVER_BIN
 mkdir -p $RIVER_BIN
 
 # Install micromamba

@@ -15,24 +15,27 @@ To install the development version, use the following commands for x64, for anot
 # adjust where you want to install micromamba
 
 
-git clone https://github.com/giangbioinformatics/nf-utils.git -b dev
-cd nf-utils 
+git clone https://github.com/giangbioinformatics/river-utils.git -b dev
+cd river-utils 
+bash base.sh
 make build
-pip install dist/*.whl
+pip install -e .
 ```
 
 ### Latest Version
 To install the latest stable version, use the following command:
 
 ```bash
-pip install nf-utils
+bash <(curl -Ls https://raw.githubusercontent.com/giangbioinformatics/river-utils/dev/base.sh) $HOME dev
+source ~/.river.sh
+river setup install
 ```
 
 ## Usage
 Overview
 The nf-utils CLI consists of three main subcommands:
 
-+ `cloud`: Manage AWS S3 configurations and mount buckets using Goofys. The current aws cli does not support region
++ `cloud`: Manage AWS S3 configurations and mount buckets using **Goofys**. The current aws cli does not support region
 + `job`: Manage and generate job scripts for HPC systems and River web server.
 + `setup`: Set up standard tools for bioinformatics analysis.
 
