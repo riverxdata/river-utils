@@ -32,9 +32,11 @@ export PATH="$RIVER_HOME/.river/bin:$PATH"
 export MAMBA_ROOT_PREFIX="$RIVER_HOME/.river/images/micromamba"
 
 # Create micromamba environment and install river-utils
-micromamba create -n river anaconda::python conda-forge::singularity=3.8.6 bioconda::nextflow  -y
+micromamba create -n river anaconda::python conda-forge::singularity=3.8.6 bioconda::nextflow conda-forge::r-base=4.4.2  -y
 micromamba run -n river pip install git+https://github.com/giangbioinformatics/river-utils.git@${RIVER_VERSION}
 
+# Create the singularity dir
+mkdir -p $RIVER_HOME/.river/images/singularities/images
 
 # Create .river.sh for environment variables
 cat <<EOF > $RIVER_HOME/.river.sh
