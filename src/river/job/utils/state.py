@@ -14,6 +14,11 @@ def get_slurm_jobs(jobs: List[Job]):
         if not job.slurm_job_id:
             try:
                 job_path = f"{river_home}/.river/jobs/{job.uuid_job_id}"
+                if os.path.exists(f"{job_path}/job.proxy_location"):
+                    proxy_location = subprocess.check_output(
+                        f"cat {job_path}/job.proxy_location", shell=True
+                    )
+                    job.proxy_location = proxy_location.decode().strip()
                 if os.path.exists(f"{job_path}/job.id"):
                     slurm_id = subprocess.check_output(
                         f"cat {job_path}/job.id", shell=True

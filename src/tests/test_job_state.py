@@ -1,7 +1,7 @@
 import json
 
 
-def test_get_job_install(
+def test_get_job_state(
     request,
     runner,
     cli_app,
@@ -14,6 +14,8 @@ def test_get_job_install(
     assert json.loads(result.output.strip("\n")) == {
         "uuid_job_id": "uuid",
         "slurm_job_id": "1",
+        "proxy_location": "uuid/",
+        "url": "uuid",
         "port": "localhost",
         "host": "localhost",
     }

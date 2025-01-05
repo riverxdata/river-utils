@@ -7,6 +7,7 @@ class Job:
         self,
         uuid_job_id,
         slurm_job_id=None,
+        proxy_location=None,
         status=None,
         url=None,
         port=None,
@@ -15,6 +16,7 @@ class Job:
     ):
         self.uuid_job_id = uuid_job_id
         self.slurm_job_id = slurm_job_id
+        self.proxy_location = proxy_location
         self.status = status
         self.url = url
         self.port = port
@@ -22,7 +24,7 @@ class Job:
         self.running_time = running_time
 
     def __repr__(self):
-        return f"Job(uuid={self.uuid_job_id}, slurm_id={self.slurm_job_id}, status={self.status}, running_time={self.running_time}, url={self.url}, host={self.host}, port={self.port})"
+        return f"Job(uuid={self.uuid_job_id}, slurm_id={self.slurm_job_id}, proxy_location={self.proxy_location} status={self.status}, running_time={self.running_time}, url={self.url}, host={self.host}, port={self.port})"
 
     def to_dict(self):
         return json.dumps(
@@ -31,6 +33,7 @@ class Job:
                 for key, value in {
                     "uuid_job_id": self.uuid_job_id,
                     "slurm_job_id": self.slurm_job_id,
+                    "proxy_location": self.proxy_location,
                     "status": self.status,
                     "url": self.url,
                     "port": self.port,

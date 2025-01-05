@@ -17,11 +17,16 @@ import pytest
             "https://github.com/riverbioinformatics/bioinfor-wf-quality-control-ngs.git",
             "0.0.0",
         ),
+        (
+            "https://github.com/riverbioinformatics/data-sw-rstudio.git",
+            "0.0.0",
+        ),
     ],
     ids=[
         "overwrite-ui-job",
         "ui-job",
         "no-ui-job",
+        "proxy-location",
     ],
 )
 def test_create_script(
