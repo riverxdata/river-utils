@@ -3,7 +3,6 @@
 # Variables
 PYTHON := python3
 BUILD_DIR := dist
-VERSION := $()
 
 dev:
 	. env/bin/activate

@@ -4,6 +4,7 @@ set -o pipefail
 
 # Set config directory
 RIVER_HOME=${1:-$HOME}
+RIVER_VERSION=${2:-dev}
 echo "RIVER_HOME is set to: $RIVER_HOME"
 echo "River software dependencies setup"
 MICROMAMBA_VERSION=2.0.5
