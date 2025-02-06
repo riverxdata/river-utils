@@ -1,0 +1,32 @@
+{
+	"cpus": 1,
+	"memory": "1G",
+	"times": "1:00:00",
+	"uuid_job_id": "job-id",
+	"bucket_name": "test",
+	"project_name": "community",
+	"endpoint": "https://fake-s3.cloud",
+	"git": "https://github.com/nf-core/demo.git",
+	"tag": "1.0.1",
+	"params": {
+		"igenomes_base": "s3://ngi-igenomes/igenomes/",
+		"igenomes_ignore": "false",
+		"max_multiqc_email_size": "25.MB",
+		"skip_trim": "false",
+		"publish_dir_mode": "copy",
+		"plaintext_email": "false",
+		"monochrome_logs": "false",
+		"help": "false",
+		"help_full": "false",
+		"show_hidden": "false",
+		"version": "false",
+		"pipelines_testdata_base_path": "https://raw.githubusercontent.com/nf-core/test-datasets/",
+		"custom_config_version": "master",
+		"custom_config_base": "\"https://raw.githubusercontent.com/nf-core/configs/${params.custom_config_version}\"",
+		"validate_params": "true",
+		"config_profile_name": "Test profile",
+		"config_profile_description": "Minimal test dataset to check pipeline function",
+		"input": "https://raw.githubusercontent.com/nf-core/test-datasets/viralrecon/samplesheet/samplesheet_test_illumina_amplicon.csv",
+		"outdir": "workspace"
+	}
+}

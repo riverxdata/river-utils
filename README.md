@@ -26,9 +26,8 @@ pip install -e .
 To install the latest stable version, use the following command:
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/giangbioinformatics/river-utils/dev/base.sh) $HOME dev
+bash <(curl -Ls https://raw.githubusercontent.com/giangbioinformatics/river-utils/dev/install/setup.sh) $HOME dev
 source ~/.river.sh
-river setup install
 ```
 
 ## Usage
@@ -55,39 +54,12 @@ Subcommands:
 + create: Generate a job script based on provided Git repository and version.
 + info: Fetch and display information about jobs.
 ```bash
-job create --git GIT_REPO_URL --version VERSION --job-id JOB_ID
+job create --job-id JOB_ID
+job config --job-id JOB_ID
 job info JOB_UUIDS
 ```
 
-### 3.`setup`
-The setup command is used for setting up bioinformatics tools and utilities.
-include:
-+ nextflow
-+ singularity
-+ micromamba
-+ goofys
-+ visual studio code server
-
-Subcommands:
-+ `install`: Install the River utilities and dependencies.
-+ `clean`: Clean up installed utilities and configurations.
-
-
-To set up the directory where to store your job and installization, export this env.
-By default, it will be user HOME directory
-RIVER_HOME=(your customer river setup directory)
-
-Install
-```bash
-river setup install 
-```
-
-Uninstall tools
-```bash
-river setup clean 
-```
-
-To load these setup, run the below or add it to .bashrc 
+To load micromamba and river command line tool with these setup, run the below or add it to .bashrc 
 ```bash
 source ~/.river.sh
 ```
