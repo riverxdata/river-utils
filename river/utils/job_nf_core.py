@@ -18,7 +18,7 @@ def format_quote(value: str):
         return value
     if '"' not in value:
         if " //" in value:
-            value =value.split(" //")[0]
+            value =value.split(" //")[0].strip()
         return f'"{value}"'
     return value
 
