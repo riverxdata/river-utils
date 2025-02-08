@@ -11,7 +11,7 @@
 	"params": {
 		"igenomes_base": "s3://ngi-igenomes/igenomes/",
 		"igenomes_ignore": "false",
-		"max_multiqc_email_size": "25.MB",
+		"max_multiqc_email_size": "25.MB // just comment",
 		"skip_trim": "false",
 		"publish_dir_mode": "copy",
 		"plaintext_email": "false",
