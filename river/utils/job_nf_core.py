@@ -17,6 +17,8 @@ def format_quote(value: str):
     if isinstance(value, (int, float)) or value in {"true", "false", "null"}:
         return value
     if '"' not in value:
+        if " //" in value:
+            value =value.split(" //")[0]
         return f'"{value}"'
     return value
 
