@@ -51,8 +51,8 @@ if [ $owner = "nf-core" ]; then
     nextflow run $owner/$repo_name -r $tag -c river.config -profile singularity --outdir $local_outdir
     # tarball folder and upload
     tar -czvf ${local_outdir}.tar.gz $local_outdir
-    mkdir -p workspace/$outdir
-    cp ${local_outdir}.tar.gz workspace/$outdir
+    mkdir -p $outdir
+    cp ${local_outdir}.tar.gz $outdir
 else
     bash analysis/river/main.sh
 fi
