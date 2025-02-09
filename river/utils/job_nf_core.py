@@ -14,12 +14,13 @@ def convert_value(value):
 
 def format_quote(value: str):
     # format quotes so nextflow can read config
-    if " //" in value:
-        value = value.split(" //")[0].strip()
-    if value in {"true", "false", "null"}:
-        return value
-    if '"' not in value and "'" not in value:
-        value = f'"{value}"'
+    if isinstance(value, str):
+        if " //" in value:
+            value = value.split(" //")[0].strip()
+        if value in {"true", "false", "null"}:
+            return value
+        if '"' not in value and "'" not in value:
+            value = f'"{value}"'
     return value
 
 
