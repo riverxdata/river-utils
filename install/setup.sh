@@ -54,7 +54,7 @@ micromamba create -n river \
     conda-forge::zsh \
     conda-forge::awscli \
     -y
-
+eval "\$(micromamba shell hook -s posix)"
 micromamba activate river
 
 pip install git+https://github.com/riverxdata/river-utils.git@${RIVER_VERSION}
