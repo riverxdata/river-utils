@@ -15,7 +15,7 @@ To install the development version, use the following commands for x64, for anot
 # adjust where you want to install micromamba
 
 
-git clone https://github.com/giangbioinformatics/river-utils.git -b dev
+git clone https://github.com/riverxdata/river-utils.git -b dev
 cd river-utils 
 bash base.sh
 make build
@@ -26,7 +26,7 @@ pip install -e .
 To install the latest stable version, use the following command:
 
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/giangbioinformatics/river-utils/dev/install/setup.sh) $HOME dev
+bash <(curl -Ls https://raw.githubusercontent.com/riverxdata/river-utils/dev/install/setup.sh) $HOME dev
 source ~/.river.sh
 ```
 
