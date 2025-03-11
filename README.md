@@ -23,10 +23,17 @@ pip install -e .
 ```
 
 ### Latest Version
-To install the latest stable version, use the following command:
+To install the latest stable version, use the following command, beside the python package, it offers a few cool softwares:
++ aws: the aws client to interact with AWS services or AWS compatible services
++ singularity: the container engine that is best suit for root-less environments
++ r-base (4.4.0): the R environment where you can play around with AWS
++ python (3.9.21): The Python environment
++ zsh: The shell with plugins help to boost your performace when work with unix
 
+**Note**: It will install the micromamba, create environment call river, install the above software but not restrict the versions
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/riverxdata/river-utils/dev/install/setup.sh) $HOME dev
+version="add_awscli_zsh"
+bash <(curl -Ls https://raw.githubusercontent.com/riverxdata/river-utils/${version}/install/setup.sh) $HOME $version
 source ~/.river.sh
 ```
 

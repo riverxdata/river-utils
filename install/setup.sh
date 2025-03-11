@@ -57,6 +57,18 @@ micromamba create -n river \
 
 micromamba run -n river pip install git+https://github.com/giangbioinformatics/river-utils.git@${RIVER_VERSION}
 
+# zsh setup
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+# plugins
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+# Update .zshrc
+echo "Updating .zshrc..."
+sed -i '/^plugins=/,/^)/c\plugins=(\n    git\n    docker\n    docker-compose\n    history\n    rsync\n    safe-paste\n    zsh-autosuggestions\n    zsh-syntax-highlighting\n)\n' ~/.zshrc
+source ~/.zshrc
+
 # Create the singularity dir
 mkdir -p $RIVER_HOME/.river/images/singularities/images
 
