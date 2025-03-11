@@ -30,10 +30,10 @@ jobs:
 
             - name: Run tests with coverage
               run: |
-                  
                   make unittest
     setup-tests:
         runs-on: ubuntu-latest
-        - name: Test installization of software in micromamba environments
-        run: |
-            bash <(curl -Ls https://raw.githubusercontent.com/riverxdata/river-utils/${{ github.sha }}/install/setup.sh) $HOME ${{ github.sha }}
+        steps:
+            - name: Test installation of software in micromamba environments
+              run: |
+                  bash <(curl -Ls https://raw.githubusercontent.com/riverxdata/river-utils/${{ github.sha }}/install/setup.sh) $HOME ${{ github.sha }}
