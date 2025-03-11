@@ -55,7 +55,9 @@ micromamba create -n river \
     conda-forge::awscli \
     -y
 
-micromamba run -n river pip install git+https://github.com/giangbioinformatics/river-utils.git@${RIVER_VERSION}
+micromamba activate river
+
+pip install git+https://github.com/riverxdata/river-utils.git@${RIVER_VERSION}
 
 # zsh setup
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
