@@ -13,9 +13,13 @@ nf-utils is a versatile Command-Line Interface (CLI) tool designed to streamline
 To install the development version, use the following commands for x64, for another CPU architect, follow [here](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html):
 ```bash
 # adjust where you want to install micromamba
+<<<<<<< HEAD
 
 
 git clone https://github.com/riverxdata/river-utils.git -b dev
+=======
+git clone https://github.com/giangbioinformatics/river-utils.git -b dev
+>>>>>>> 1c496bd (rm newline)
 cd river-utils 
 bash base.sh
 make build
