@@ -87,5 +87,3 @@ micromamba activate -n river
 zsh 
 source ~/.zshrc
 EOF
-# loading new zsh
-source ~/.river.sh
