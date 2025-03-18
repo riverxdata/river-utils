@@ -69,8 +69,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 
 # Update .zshrc
 echo "Updating .zshrc..."
-sed -i '/^plugins=/,/^)/c\plugins=(\n    git\n    docker\n    docker-compose\n    history\n    rsync\n    safe-paste\n    zsh-autosuggestions\n    zsh-syntax-highlighting\n)\n' ~/.zshrc
-source ~/.zshrc
+sed -i "s|plugins=(git)|plugins=(\n    git\n    docker\n    docker-compose\n    history\n    rsync\n    safe-paste\n    zsh-autosuggestions\n    zsh-syntax-highlighting\n)\n|" ~/.zshrc
 
 # Create the singularity dir
 mkdir -p $RIVER_HOME/.river/images/singularities/images
@@ -85,4 +84,6 @@ export NXF_SINGULARITY_CACHEDIR=\$SINGULARITY_CACHE_DIR/images
 export PATH=\${RIVER_HOME_TOOLS}:\$PATH
 eval "\$(micromamba shell hook -s posix)"
 micromamba activate -n river
+zsh 
+source ~/.zshrc
 EOF
