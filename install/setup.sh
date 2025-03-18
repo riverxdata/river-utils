@@ -69,7 +69,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 
 # Update .zshrc
 echo "Updating .zshrc..."
-sed -i '/^plugins=/,/^)/c\plugins=(\n    git\n    docker\n    docker-compose\n    history\n    rsync\n    safe-paste\n    zsh-autosuggestions\n    zsh-syntax-highlighting\n)\n' ~/.zshrc
+sed -i "s|plugins=(git)|plugins=(\n    git\n    docker\n    docker-compose\n    history\n    rsync\n    safe-paste\n    zsh-autosuggestions\n    zsh-syntax-highlighting\n)\n|" ~/.zshrc
 source ~/.zshrc
 
 # Create the singularity dir
