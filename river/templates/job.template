@@ -47,7 +47,12 @@ goofys --profile $bucket_name --file-mode=0700 --dir-mode=0700 --endpoint=$endpo
 # Main
 if [ $owner = "nf-core" ]; then
     river job config --job-id $uuid_job_id
-    nextflow run $owner/$repo_name -r $tag -c river.config -profile singularity
+    local_outdir=river_result
+    nextflow run $owner/$repo_name -r $tag -c river.config -profile singularity --outdir $local_outdir
+    # tarball folder and upload
+    tar -czvf ${local_outdir}.tar.gz $local_outdir
+    mkdir -p $outdir
+    cp ${local_outdir}.tar.gz $outdir
 else
     bash analysis/river/main.sh
 fi

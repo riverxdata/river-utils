@@ -46,8 +46,30 @@ export PATH="$RIVER_HOME/.river/bin:$PATH"
 export MAMBA_ROOT_PREFIX="$RIVER_HOME/.river/images/micromamba"
 
 # Create micromamba environment and install river-utils
-micromamba create -n river anaconda::python conda-forge::singularity=3.8.6 bioconda::nextflow conda-forge::r-base conda-forge::pigz -y
-micromamba run -n river pip install git+https://github.com/giangbioinformatics/river-utils.git@${RIVER_VERSION}
+micromamba create -n river \
+    anaconda::python \
+    conda-forge::r-base \
+    conda-forge::singularity=3.8.6 \
+    bioconda::nextflow \
+    conda-forge::zsh \
+    conda-forge::awscli \
+    -y
+
+eval "$(micromamba shell hook --shell bash)"
+micromamba activate river
+
+pip install git+https://github.com/riverxdata/river-utils.git@${RIVER_VERSION}
+
+# zsh setup
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+# plugins
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+# Update .zshrc
+echo "Updating .zshrc..."
+sed -i "s|plugins=(git)|plugins=(\n    git\n    docker\n    docker-compose\n    history\n    rsync\n    safe-paste\n    zsh-autosuggestions\n    zsh-syntax-highlighting\n)\n|" ~/.zshrc
 
 # Create the singularity dir
 mkdir -p $RIVER_HOME/.river/images/singularities/images
@@ -62,4 +84,6 @@ export NXF_SINGULARITY_CACHEDIR=\$SINGULARITY_CACHE_DIR/images
 export PATH=\${RIVER_HOME_TOOLS}:\$PATH
 eval "\$(micromamba shell hook -s posix)"
 micromamba activate -n river
+zsh 
+source ~/.zshrc
 EOF
