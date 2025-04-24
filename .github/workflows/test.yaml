@@ -40,4 +40,4 @@ jobs:
 
             - name: Test installation of software in micromamba environments
               run: |
-                  bash <(./install/setup.sh) $HOME ${{ github.sha }}
+                  bash ./install/setup.sh $HOME ${{ github.sha }}
