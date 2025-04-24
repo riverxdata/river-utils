@@ -28,12 +28,16 @@ jobs:
                   pip install -e .
                   pip install -r requirements.txt
 
-            - name: Run tests with coverage
+            - name: Test install python package river-utils
               run: |
                   make unittest
+
     setup-tests:
         runs-on: ubuntu-latest
         steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
             - name: Test installation of software in micromamba environments
               run: |
-                  bash <(curl -Ls https://raw.githubusercontent.com/riverxdata/river-utils/${{ github.sha }}/install/setup.sh) $HOME ${{ github.sha }}
+                  bash <(./install/setup.sh) $HOME ${{ github.sha }}
