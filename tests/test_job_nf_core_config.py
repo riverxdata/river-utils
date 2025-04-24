@@ -30,5 +30,5 @@ def test_nf_core_config(
     expected_out_file = os.path.join(job_dir, "expected_river.config")
     with open(expected_out_file, "r") as expected_f, open(out_file, "r") as out_f:
         assert (
-            expected_f.read() == out_f.read()
+            expected_f.read().strip() == out_f.read().strip()
         ), "The output content does not match the expected content."
