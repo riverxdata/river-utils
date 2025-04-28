@@ -84,6 +84,4 @@ export NXF_SINGULARITY_CACHEDIR=\$SINGULARITY_CACHE_DIR/images
 export PATH=\${RIVER_HOME_TOOLS}:\$PATH
 eval "\$(micromamba shell hook -s posix)"
 micromamba activate -n river
-zsh 
-source ~/.zshrc
 EOF
