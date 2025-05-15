@@ -45,6 +45,7 @@ def s3_config(
                 logger.info(
                     f"Profile '{profile_name}' already exists in {aws_config_file}."
                 )
+            return
 
     logger.info(f"Adding profile '{profile_name}' to AWS config...")
     with open(aws_config_file, "a") as config_file:
