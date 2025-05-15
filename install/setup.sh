@@ -85,6 +85,4 @@ export NXF_WORK=\${RIVER_HOME}/.river/nextflow/work
 export PATH=\${RIVER_HOME_TOOLS}:\$PATH
 eval "\$(micromamba shell hook -s posix)"
 micromamba activate -n river
-zsh 
-source ~/.zshrc
 EOF
