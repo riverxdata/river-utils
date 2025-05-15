@@ -81,6 +81,7 @@ export RIVER_HOME_TOOLS=\${RIVER_HOME}/.river/bin
 export MAMBA_ROOT_PREFIX=\${RIVER_HOME}/.river/images/micromamba
 export SINGULARITY_CACHE_DIR=\${RIVER_HOME}/.river/images/singularities
 export NXF_SINGULARITY_CACHEDIR=\$SINGULARITY_CACHE_DIR/images
+export NXF_WORK=\${RIVER_HOME}/.river/nextflow/work
 export PATH=\${RIVER_HOME_TOOLS}:\$PATH
 eval "\$(micromamba shell hook -s posix)"
 micromamba activate -n river
