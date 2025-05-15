@@ -44,7 +44,7 @@ mount_point=$RIVER_HOME/.river/jobs/$uuid_job_id/workspace
 mkdir -p $mount_point
 goofys --profile $bucket_name --file-mode=0700 --dir-mode=0700 --endpoint=$endpoint $bucket_name $mount_point
 
-if [ -n "$profile" ]; then
+if [ -n "${profile:-}" ]; then
     profiles="singularity,$profile"
 else
     profiles="singularity"

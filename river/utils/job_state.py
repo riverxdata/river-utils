@@ -85,9 +85,6 @@ def get_jobs_info(jobs: List[Job]):
                 cmd, shell=True, stderr=subprocess.DEVNULL
             ).decode("utf-8")
             if job_info:
-                break
+                parsing_squeue_status(jobs, job_info)
         except subprocess.CalledProcessError:
-            continue
-
-    if job_info:
-        parsing_squeue_status(jobs, job_info)
+            pass
