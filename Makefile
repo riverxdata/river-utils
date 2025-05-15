@@ -9,7 +9,7 @@ dev:
 	pip install -e .
 
 unittest:
-	RIVER_HOME="./tests/river_home" pytest tests --cov=src -k "not setup" --cov-report=term
+	RIVER_HOME="./tests/river_home" pytest tests --cov=src -k "not setup" --cov-report=term -vvvvv
 
 # Build the project
 $(BUILD_DIR):

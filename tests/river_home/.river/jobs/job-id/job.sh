@@ -11,7 +11,7 @@ cd ./tests/river_home/.river/jobs/job-id
 
 # Loading config to be exported bash variable
 while IFS== read key value; do
-    printf -v "$key" "$value"
+    printf -v "$key" '%s' "$value"
 done < <(jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' config.json)
 
 # Repo
@@ -44,11 +44,17 @@ mount_point=$RIVER_HOME/.river/jobs/$uuid_job_id/workspace
 mkdir -p $mount_point
 goofys --profile $bucket_name --file-mode=0700 --dir-mode=0700 --endpoint=$endpoint $bucket_name $mount_point
 
+if [ -n "$profile" ]; then
+    profiles="singularity,$profile"
+else
+    profiles="singularity"
+fi
+
 # Main
 if [ $owner = "nf-core" ]; then
     river job config --job-id $uuid_job_id
-    local_outdir=river_result
-    nextflow run $owner/$repo_name -r $tag -c river.config -profile singularity --outdir $local_outdir
+    local_outdir=river_result    
+    nextflow run $owner/$repo_name -r $tag -c river.config -profile $profiles --outdir $local_outdir
     # tarball folder and upload
     tar -czvf ${local_outdir}.tar.gz $local_outdir
     mkdir -p $outdir
