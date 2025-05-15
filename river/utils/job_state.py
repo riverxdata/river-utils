@@ -9,38 +9,27 @@ def get_slurm_jobs(jobs: List[Job]):
     river_home = os.getenv("RIVER_HOME")
     if not river_home:
         raise EnvironmentError("RIVER_HOME environment variable is not set")
-
     for job in jobs:
-        if not job.slurm_job_id:
-            try:
-                job_path = f"{river_home}/.river/jobs/{job.uuid_job_id}"
-                if os.path.exists(f"{job_path}/job.proxy_location"):
-                    proxy_location = subprocess.check_output(
-                        f"cat {job_path}/job.proxy_location", shell=True
-                    )
-                    job.proxy_location = proxy_location.decode().strip()
-                if os.path.exists(f"{job_path}/job.id"):
-                    slurm_id = subprocess.check_output(
-                        f"cat {job_path}/job.id", shell=True
-                    )
-                    job.slurm_job_id = slurm_id.decode().strip()
-                if os.path.exists(f"{job_path}/job.url"):
-                    slurm_url = subprocess.check_output(
-                        f"cat {job_path}/job.url", shell=True
-                    )
-                    job.url = slurm_url.decode().strip()
-                if os.path.exists(f"{job_path}/job.port"):
-                    slurm_port = subprocess.check_output(
-                        f"cat {job_path}/job.port", shell=True
-                    )
-                    job.port = slurm_port.decode().strip()
-                if os.path.exists(f"{job_path}/job.host"):
-                    slurm_host = subprocess.check_output(
-                        f"cat {job_path}/job.host", shell=True
-                    )
-                    job.host = slurm_host.decode().strip()
-            except subprocess.CalledProcessError:
-                pass
+        job_path = f"{river_home}/.river/jobs/{job.uuid_job_id}"
+        if not os.path.exists(job_path):
+            job.status = "NOT_FOUND"
+        if os.path.exists(f"{job_path}/job.proxy_location"):
+            proxy_location = subprocess.check_output(
+                f"cat {job_path}/job.proxy_location", shell=True
+            )
+            job.proxy_location = proxy_location.decode().strip()
+        if os.path.exists(f"{job_path}/job.id"):
+            slurm_id = subprocess.check_output(f"cat {job_path}/job.id", shell=True)
+            job.slurm_job_id = slurm_id.decode().strip()
+        if os.path.exists(f"{job_path}/job.url"):
+            slurm_url = subprocess.check_output(f"cat {job_path}/job.url", shell=True)
+            job.url = slurm_url.decode().strip()
+        if os.path.exists(f"{job_path}/job.port"):
+            slurm_port = subprocess.check_output(f"cat {job_path}/job.port", shell=True)
+            job.port = slurm_port.decode().strip()
+        if os.path.exists(f"{job_path}/job.host"):
+            slurm_host = subprocess.check_output(f"cat {job_path}/job.host", shell=True)
+            job.host = slurm_host.decode().strip()
 
 
 def parse_duration(duration_str):
@@ -80,22 +69,25 @@ def parsing_squeue_status(jobs: List[Job], states: str):
 def get_jobs_info(jobs: List[Job]):
     get_slurm_jobs(jobs)
     job_ids = [job.slurm_job_id for job in jobs if job.slurm_job_id]
-    if len(job_ids) == 0:
+    if not job_ids:
         return
-    job_ids = ",".join(job_ids)
-    squeue_cmd = f"squeue --jobs {job_ids} --format='%.18i %.9T %.10M'"
-    sacct_cmd = f"sacct --jobs {job_ids} --format='JobID,State,Elapsed'"
-    try:
-        squeue_status = subprocess.check_output(
-            squeue_cmd, shell=True, stderr=subprocess.DEVNULL
-        ).decode("utf-8")
-    except subprocess.CalledProcessError:
-        squeue_status = None
-    try:
-        sacct_status = subprocess.check_output(
-            sacct_cmd, shell=True, stderr=subprocess.DEVNULL
-        ).decode("utf-8")
-    except subprocess.CalledProcessError:
-        sacct_status = None
-    parsing_squeue_status(jobs, sacct_status)
-    parsing_squeue_status(jobs, squeue_status)
+
+    job_ids_str = ",".join(job_ids)
+    commands = [
+        f"squeue --jobs {job_ids_str} --format='%.18i %.9T %.10M'",
+        f"sacct --jobs {job_ids_str} --format='JobID,State,Elapsed'",
+    ]
+
+    job_info = None
+    for cmd in commands:
+        try:
+            job_info = subprocess.check_output(
+                cmd, shell=True, stderr=subprocess.DEVNULL
+            ).decode("utf-8")
+            if job_info:
+                break
+        except subprocess.CalledProcessError:
+            continue
+
+    if job_info:
+        parsing_squeue_status(jobs, job_info)
