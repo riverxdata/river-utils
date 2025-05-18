@@ -13,6 +13,7 @@
 		"igenomes_ignore": "false",
 		"max_multiqc_email_size": "25.MB // just comment",
 		"number": "100 // Add number",
+		"plus_params": "params.text+ 'text'",
 		"skip_trim": "false",
 		"publish_dir_mode": "copy",
 		"plaintext_email": "false",

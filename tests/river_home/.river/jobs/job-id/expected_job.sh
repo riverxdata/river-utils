@@ -54,7 +54,7 @@ fi
 if [ $owner = "nf-core" ]; then
     river job config --job-id $uuid_job_id
     local_outdir=river_result    
-    nextflow run $owner/$repo_name -r $tag -c river.config -profile $profiles --outdir $local_outdir
+    nextflow run $owner/$repo_name -r $tag -c river.config -profile $profiles --outdir $local_outdir -resume -process.executor slurm
     # tarball folder and upload
     tar -czvf ${local_outdir}.tar.gz $local_outdir
     mkdir -p $outdir

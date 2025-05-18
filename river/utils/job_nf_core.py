@@ -70,6 +70,8 @@ def json_to_nextflow_config(json_file: str, nf_config_file: str) -> None:
     lines = ["params {"]
     for key, value in params.items():
         formatted_value = format_quote(convert_value(value))
+        if "+" in formatted_value:
+            formatted_value = formatted_value.strip('"')
         lines.append(f"    {key} = {formatted_value}")
     lines.append("}")
 
