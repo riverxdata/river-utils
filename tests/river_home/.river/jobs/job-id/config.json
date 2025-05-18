@@ -14,6 +14,7 @@
 		"max_multiqc_email_size": "25.MB // just comment",
 		"number": "100 // Add number",
 		"plus_params": "params.text+ 'text'",
+		"plus_params2": "params.text+ \"text\"",
 		"skip_trim": "false",
 		"publish_dir_mode": "copy",
 		"plaintext_email": "false",

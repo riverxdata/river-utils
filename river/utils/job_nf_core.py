@@ -34,7 +34,11 @@ def format_quote(value: Any) -> str:
         if value in {"true", "false", "null"}:
             return value
 
-        # Avoid adding extra quotes if already quoted
+        # replace the ' to be "
+        if "'" in value:
+            value = value.replace("'", '"')
+
+        # avoid adding extra quotes if already quoted
         if '"' not in value:
             try:
                 float(value)  # attempt to convert, for safety
@@ -70,8 +74,7 @@ def json_to_nextflow_config(json_file: str, nf_config_file: str) -> None:
     lines = ["params {"]
     for key, value in params.items():
         formatted_value = format_quote(convert_value(value))
-        if "+" in formatted_value:
-            formatted_value = formatted_value.strip('"')
+        print(formatted_value)
         lines.append(f"    {key} = {formatted_value}")
     lines.append("}")
 
