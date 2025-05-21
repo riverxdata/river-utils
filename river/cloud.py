@@ -50,7 +50,7 @@ def s3_config(
     logger.info(f"Adding profile '{profile_name}' to AWS config...")
     with open(aws_config_file, "a") as config_file:
         config_file.write(
-            f"\n[{profile_name}]\n"
+            f"[{profile_name}]\n"
             f"region = {region}\n"
             f"aws_access_key_id = {aws_access_key_id}\n"
             f"aws_secret_access_key = {aws_secret_access_key}\n"

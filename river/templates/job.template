@@ -44,6 +44,19 @@ mount_point=$RIVER_HOME/.river/jobs/$uuid_job_id/workspace
 mkdir -p $mount_point
 goofys --profile $bucket_name --file-mode=0700 --dir-mode=0700 --endpoint=$endpoint $bucket_name $mount_point
 
+# AWS config
+cat <<EOF > aws.config
+aws {
+    profile= '${bucket_name}'
+    client {
+        endpoint = '${endpoint}'
+        s3PathStyleAccess = true
+    }
+}
+EOF
+
+export NXF_CLOUDCACHE_PATH="s3://${bucket_name}/nextflow_cache"
+
 if [ -n "${profile:-}" ]; then
     profiles="singularity,$profile"
 else
@@ -53,12 +66,7 @@ fi
 # Main
 if [ $owner = "nf-core" ]; then
     river job config --job-id $uuid_job_id
-    local_outdir=river_result    
-    nextflow run $owner/$repo_name -r $tag -c river.config -profile $profiles --outdir $local_outdir -resume -process.executor slurm
-    # tarball folder and upload
-    tar -czvf ${local_outdir}.tar.gz $local_outdir
-    mkdir -p $outdir
-    cp ${local_outdir}.tar.gz $outdir
+    nextflow run $owner/$repo_name -r $tag -c aws.config -c river.config -profile $profiles -process.executor slurm -process.shell 'bash' --outdir "s3://$bucket_name/$outdir/$uuid_job_id" -resume
 else
     bash analysis/river/main.sh
 fi
